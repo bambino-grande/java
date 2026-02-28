@@ -46,16 +46,12 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public InStockCarOrder updateInStockCarOrder(InStockCarOrder inStockCarOrder) {
-        if(inStockCarOrderRepository.findById(inStockCarOrder.getOrderId()) == null)
-            throw new DomainValidationException("In Stock Car Order Not Found");
         inStockCarOrderRepository.save(inStockCarOrder);
         return inStockCarOrder;
     }
 
     @Override
     public ComplectationCarOrder updateComplectationCarOrder(ComplectationCarOrder complectationCarOrder) {
-        if(complectationCarOrderRepository.findById(complectationCarOrder.getOrderId()) == null)
-            throw new DomainValidationException("Complectation Car Order Not Found");
         complectationCarOrderRepository.save(complectationCarOrder);
         return complectationCarOrder;
     }

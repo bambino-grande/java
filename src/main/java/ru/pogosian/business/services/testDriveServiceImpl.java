@@ -25,6 +25,7 @@ public class testDriveServiceImpl implements testDriveService {
         }
 
         TestDriveRequest request = TestDriveRequest.builder()
+                .isCarCapableForTestDrive(car.getAvailableForTestDrive())
                 .clientId(clientID)
                 .cartId(carID)
                 .testDriveStartAt(startingTime)

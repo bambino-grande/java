@@ -30,23 +30,17 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car updateCar(Car car) {
-        if(carRepository.findById(car.getCarId()) == null)
-            throw new DomainValidationException("Car with id " + car.getCarId() + " not found");
         carRepository.save(car);
         return car;
     }
 
     @Override
     public void deleteCar(UUID carID) {
-        if(carRepository.findById(carID) ==  null)
-            throw new DomainValidationException("Car with id " + carID + " not found");
         carRepository.deleteById(carID);
     }
 
     @Override
     public Car viewCar(UUID carID) {
-        if(carRepository.findById(carID) ==  null)
-            throw new DomainValidationException("Car with id " + carID + " not found");
         return  carRepository.findById(carID);
     }
 
@@ -127,9 +121,6 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car CreateCarFromModel(UUID modelId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive) {
-        if(modelId == null)
-            throw new DomainValidationException("modelId is null");
-
         DetailFactory wheelFactory = new WheelDetailsFactory();
         DetailFactory interiorFactory = new InterirorFactory();
         DetailFactory transmissionFactory = new TransmissionDetailFactory();

@@ -1,5 +1,6 @@
 package ru.pogosian.infrastructure.repository;
 
+import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.testDrive.TestDriveRequest;
 import ru.pogosian.business.repositories.TestDriveRequestRepository;
 
@@ -12,12 +13,16 @@ import java.util.Map;
 public class TestDriveRequestRepositoryImpl implements TestDriveRequestRepository {
     private Map<UUID, TestDriveRequest> store =  new HashMap<UUID, TestDriveRequest>();
     @Override
-    public void save(TestDriveRequest TestDriveRequest) {
-        store.put(TestDriveRequest.getTestDriveId(), TestDriveRequest);
+    public void save(TestDriveRequest testDriveRequest) {
+        if(testDriveRequest.isCarCapableForTestDrive() == false)
+            throw new DomainValidationException("Car is not capable for test drive");
+        store.put(testDriveRequest.getTestDriveId(), testDriveRequest);
     }
 
     @Override
     public TestDriveRequest findById(UUID id) {
+        if(!store.containsKey(id))
+            throw new DomainValidationException("Test drive request not found");
         TestDriveRequest TestDriveRequest = store.get(id);
         return TestDriveRequest;
     }
@@ -29,6 +34,8 @@ public class TestDriveRequestRepositoryImpl implements TestDriveRequestRepositor
 
     @Override
     public void deleteById(UUID id) {
+        if(!store.containsKey(id))
+            throw new DomainValidationException("Test drive request not found");
         store.remove(id);
     }
 }

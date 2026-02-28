@@ -1,5 +1,6 @@
 package ru.pogosian.infrastructure.repository;
 
+import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.repositories.ComplectationCarOrderRepository;
 
@@ -13,11 +14,15 @@ public class ComplectationCarOrderRepositoryImpl implements ComplectationCarOrde
     private Map<UUID, ComplectationCarOrder> store =  new HashMap<UUID, ComplectationCarOrder>();
     @Override
     public void save(ComplectationCarOrder ComplectationCarOrder) {
+        if(ComplectationCarOrder == null)
+            throw new DomainValidationException("ComplectationCarOrder is null");
         store.put(ComplectationCarOrder.getOrderId(), ComplectationCarOrder);
     }
 
     @Override
     public ComplectationCarOrder findById(UUID id) {
+        if(!store.containsKey(id))
+            throw  new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
         ComplectationCarOrder ComplectationCarOrder = store.get(id);
         return ComplectationCarOrder;
     }
@@ -29,6 +34,8 @@ public class ComplectationCarOrderRepositoryImpl implements ComplectationCarOrde
 
     @Override
     public void deleteById(UUID id) {
+        if(!store.containsKey(id))
+            throw new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
         store.remove(id);
     }
 }

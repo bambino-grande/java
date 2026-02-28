@@ -19,23 +19,17 @@ public class DetailsServiceImpl implements DetailService{
 
     @Override
     public CarDetails updateCarDetails(CarDetails carDetail) {
-        if (carDetailsRepository.findById(carDetail.getId()) == null)
-            throw new DomainValidationException("Detail with id " + carDetail.getId() + " not found");
         carDetailsRepository.save(carDetail);
         return carDetail;
     }
 
     @Override
     public void deleteCar(UUID carDetailID) {
-        if (carDetailsRepository.findById(carDetailID) == null)
-            throw new DomainValidationException("Detail with id " + carDetailID + " not found");
         carDetailsRepository.deleteById(carDetailID);
     }
 
     @Override
     public CarDetails viewCarDetails(UUID carDetailID) {
-        if(carDetailsRepository.findById(carDetailID) ==  null)
-            throw new DomainValidationException("Detail with id " + carDetailID + " not found");
         return carDetailsRepository.findById(carDetailID);
     }
 
