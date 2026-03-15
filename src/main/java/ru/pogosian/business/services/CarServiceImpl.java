@@ -5,6 +5,7 @@ import ru.pogosian.business.cars.*;
 import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.detail.factories.*;
 import ru.pogosian.business.excrptions.DomainValidationException;
+import ru.pogosian.business.filters.*;
 import ru.pogosian.business.repositories.CarDetailsRepository;
 import ru.pogosian.business.repositories.CarModelRepository;
 import ru.pogosian.business.repositories.CarRepository;
@@ -45,77 +46,25 @@ public class CarServiceImpl implements CarService{
     }
 
     @Override
-    public List<Car> filteredCars(CarFilter carFilter) {
-        List<Car> alreadyFilteredCars = new ArrayList<>();
-        for(var car : carRepository.findAll()) {
-            if(carFilter.getMinPrice() != null) {
-                if (car.getPrice().compareTo(carFilter.getMinPrice()) < 0)
-                    continue;
-            }
-            if(carFilter.getMaxPrice() != null) {
-                if (car.getPrice().compareTo(carFilter.getMaxPrice()) > 0)
-                    continue;
-            }
-            if(carFilter.getMinPrice() != null) {
-                if (car.getPrice().compareTo(carFilter.getMinPrice()) < 0)
-                    continue;
-            }
-            if(carFilter.getColor() != null) {
-                if (!carFilter.getColor().contains(car.getColor()))
-                    continue;
-            }
-            if(carFilter.getModelName() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        !carFilter.getModelName().contains(carModelRepository.findById(car.getConfiguration().getConfigurationId()).getModelName()))
-                    continue;
-            }
-            if(carFilter.getModelBrand() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        !carFilter.getModelBrand().contains(carModelRepository.findById(car.getConfiguration().getConfigurationId()).getModelBrand()))
-                    continue;
-            }
-            if(carFilter.getMinEngineVolume() != 0) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getHorsePower() < carFilter.getMinEngineVolume())
-                    continue;
-            }
-            if(carFilter.getMaxHorsePower() != 0) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getHorsePower() < carFilter.getMaxHorsePower())
-                    continue;
-            }
-            if(carFilter.getMinEngineVolume() != 0) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getEngineVolume() < carFilter.getMinHorsePower())
-                    continue;
-            }
-            if(carFilter.getMaxEngineVolume() != 0) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getEngineVolume() < carFilter.getMaxHorsePower())
-                    continue;
-            }
-            if(carFilter.getGearboxType() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getGearboxType() !=  carFilter.getGearboxType())
-                    continue;
-            }
-            if(carFilter.getDriveType() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getDriveType() !=  carFilter.getDriveType())
-                    continue;
-            }
-            if(carFilter.getBodyType() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getBodyType() !=  carFilter.getBodyType())
-                    continue;
-            }
-            if(carFilter.getFuelType() != null) {
-                if (carModelRepository.findById(car.getConfiguration().getConfigurationModelId()) == null ||
-                        carModelRepository.findById(car.getConfiguration().getConfigurationModelId()).getFuelType() !=  carFilter.getFuelType())
-                    continue;
-            }
-            alreadyFilteredCars.add(car);
-        }
+    public List<Car> filteredCars(Filter.CarFilter carFilter) {
+        CarSpecification carSpecification = new CarBodyTypeSpecification(carFilter.bodyType(), carModelRepository)
+                        .and(new CarColorSpecification(carFilter.color()))
+                        .and(new CarDriveTypeSpecification(carFilter.driveType(), carModelRepository))
+                        .and(new CarFuelTypeSpecification(carFilter.fuelType(),  carModelRepository))
+                        .and(new CarGearboxTypeSpecification(carFilter.gearboxType(),  carModelRepository))
+                        .and(new CarMaxEngineVolumeSpecification(carModelRepository, carFilter.maxEngineVolume()))
+                        .and(new CarMaxHorsePowerSpecification(carFilter.maxHorsePower(), carModelRepository))
+                        .and(new CarMaxPriceSpecfication(carFilter.maxPrice()))
+                        .and(new CarMinEngineVolumeSpecification(carModelRepository, carFilter.minEngineVolume()))
+                        .and(new CarMinHorsePowerSpecification(carFilter.minHorsePower(), carModelRepository))
+                        .and(new CarMinPriceSpecfication(carFilter.minPrice()))
+                        .and(new CarModelBrandSpecification(carFilter.modelBrand(), carModelRepository))
+                        .and(new CarModelNameSpecification(carFilter.modelName(), carModelRepository));
+
+        List<Car> alreadyFilteredCars = carRepository.findAll().stream()
+                .filter(carSpecification::isSatisfied)
+                .toList();
+
         return alreadyFilteredCars;
     }
 
