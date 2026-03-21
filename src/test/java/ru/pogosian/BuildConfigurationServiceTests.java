@@ -12,9 +12,9 @@ import ru.pogosian.business.repositories.CarDetailsRepository;
 import ru.pogosian.business.repositories.CarModelRepository;
 import ru.pogosian.business.services.buildConfigurationService;
 import ru.pogosian.business.services.buildConfigurationServiceImpl;
-import ru.pogosian.infrastructure.repository.CarConfigurationRepositoryImpl;
-import ru.pogosian.infrastructure.repository.CarDetailsRepositoryImpl;
-import ru.pogosian.infrastructure.repository.CarModelRepositoryImpl;
+import ru.pogosian.infrastructure.repository.RepositoryImpl.CarConfigurationRepositoryImpl;
+import ru.pogosian.infrastructure.repository.RepositoryImpl.CarDetailsRepositoryImpl;
+import ru.pogosian.infrastructure.repository.RepositoryImpl.CarModelRepositoryImpl;
 
 import java.math.BigDecimal;
 import java.util.*;

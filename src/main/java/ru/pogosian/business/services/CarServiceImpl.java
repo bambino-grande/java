@@ -61,11 +61,9 @@ public class CarServiceImpl implements CarService{
                         .and(new CarModelBrandSpecification(carFilter.modelBrand(), carModelRepository))
                         .and(new CarModelNameSpecification(carFilter.modelName(), carModelRepository));
 
-        List<Car> alreadyFilteredCars = carRepository.findAll().stream()
+        return carRepository.findAll().stream()
                 .filter(carSpecification::isSatisfied)
                 .toList();
-
-        return alreadyFilteredCars;
     }
 
     @Override

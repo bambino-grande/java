@@ -1,4 +1,4 @@
-package ru.pogosian.infrastructure.repository;
+package ru.pogosian.infrastructure.repository.RepositoryImpl;
 
 
 import java.util.UUID;
@@ -15,16 +15,16 @@ import ru.pogosian.business.repositories.CarConfigurationRepository;
 public class CarConfigurationRepositoryImpl implements CarConfigurationRepository {
     private Map<UUID, CarConfiguration> store =  new HashMap<UUID, CarConfiguration>();
     @Override
-    public void save(CarConfiguration CarConfiguration) {
-        if(CarConfiguration.getUsedDetails().size() < 4)
+    public void save(CarConfiguration carConfiguration) {
+        if(carConfiguration.getUsedDetails().size() < 4)
             throw new DomainValidationException("You need to specify 4 used details");
 
-        for (var carDetail : CarConfiguration.getUsedDetails()) {
-            if (carDetail.getCompatibleModelsIds() == null || !carDetail.getCompatibleModelsIds().contains(CarConfiguration.getConfigurationModelId())) {
+        carConfiguration.getUsedDetails().stream().forEach(carDetail -> {
+            if (carDetail.getCompatibleModelsIds() == null || !carDetail.getCompatibleModelsIds().contains(carConfiguration.getConfigurationModelId())) {
                 throw new IncompatibleComponentException("incompatiable details in config");
             }
-        }
-        store.put(CarConfiguration.getConfigurationId(), CarConfiguration);
+        });
+        store.put(carConfiguration.getConfigurationId(), carConfiguration);
     }
 
     @Override

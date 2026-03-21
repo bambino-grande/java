@@ -1,4 +1,4 @@
-package ru.pogosian.infrastructure.repository;
+package ru.pogosian.infrastructure.repository.RepositoryImpl;
 
 
 import java.util.UUID;

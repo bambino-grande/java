@@ -10,7 +10,7 @@ import ru.pogosian.business.services.CarService;
 import ru.pogosian.business.services.CarServiceImpl;
 import ru.pogosian.business.services.OrderService;
 import ru.pogosian.business.services.OrderServiceImpl;
-import ru.pogosian.infrastructure.repository.*;
+import ru.pogosian.infrastructure.repository.RepositoryImpl.*;
 
 import java.awt.*;
 import java.math.BigDecimal;

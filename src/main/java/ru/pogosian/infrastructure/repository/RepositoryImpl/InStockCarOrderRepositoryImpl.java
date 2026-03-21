@@ -1,4 +1,4 @@
-package ru.pogosian.infrastructure.repository;
+package ru.pogosian.infrastructure.repository.RepositoryImpl;
 
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrder;
