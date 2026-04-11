@@ -7,5 +7,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public interface DetailFactory {
-    CarDetails create(String name, Set<UUID> id, BigDecimal deltaPrice);
+    CarDetails create(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice);
+
+    CarDetails create(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice, UUID id);
+
 }

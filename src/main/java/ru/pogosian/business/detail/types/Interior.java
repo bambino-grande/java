@@ -7,7 +7,10 @@ import java.util.Set;
 import java.util.UUID;
 
 public class Interior extends CarDetails {
-    public Interior(String name, Set<UUID> id, BigDecimal deltaPrice) {
-        super(name, id, deltaPrice);
+    public Interior(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice) {
+        super(name, compatibleCarModelsId, deltaPrice);
+    }
+    public Interior(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice, UUID id) {
+        super(name, compatibleCarModelsId, deltaPrice, id);
     }
 }

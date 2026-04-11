@@ -1,5 +1,6 @@
 package ru.pogosian.business.services;
 
+import org.springframework.data.domain.Pageable;
 import ru.pogosian.business.detail.CarDetails;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface DetailService {
     CarDetails updateCarDetails(CarDetails carDetails);
     void deleteCar(UUID carDetailID);
     CarDetails viewCarDetails(UUID carDetailID);
-    List<CarDetails> viewAllCars();
+    List<CarDetails> viewAllCars(Pageable pageable);
 }

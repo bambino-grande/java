@@ -8,6 +8,7 @@ import java.util.UUID;
 @Builder
 public class ComplectationCarOrder {
     @Setter
+    @Builder.Default
     private CompectationCarOrderStatusState state = new ComplectationCarOrderPlaced();
     private UUID orderId;
     private UUID clientId;

@@ -10,8 +10,13 @@ import java.util.UUID;
 
 public class SteeringWheelFactory implements DetailFactory{
     @Override
-    public CarDetails create(String name, Set<UUID> id, BigDecimal deltaPrice){
-        return new SteeringWheel(name, id, deltaPrice);
+    public CarDetails create(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice){
+        return new SteeringWheel(name, compatibleCarModelsId, deltaPrice);
+    }
+
+    @Override
+    public CarDetails create(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice, UUID id){
+        return new SteeringWheel(name, compatibleCarModelsId, deltaPrice, id);
     }
 }
 

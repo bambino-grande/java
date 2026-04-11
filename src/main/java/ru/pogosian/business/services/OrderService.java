@@ -1,5 +1,6 @@
 package ru.pogosian.business.services;
 
+import org.springframework.data.domain.Pageable;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrder;
 
@@ -14,8 +15,8 @@ public interface OrderService {
     InStockCarOrder updateInStockCarOrder(InStockCarOrder inStockCarOrder);
     ComplectationCarOrder updateComplectationCarOrder(ComplectationCarOrder complectationCarOrder);
 
-    List<InStockCarOrder> viewAllInStockCarOrders();
-    List<ComplectationCarOrder> viewAllComplectationCarOrders();
+    List<InStockCarOrder> viewAllInStockCarOrders(Pageable pageable);
+    List<ComplectationCarOrder> viewAllComplectationCarOrders(Pageable pageable);
 
     void deleteInStockCarOrder(UUID orderID);
     void deleteComplectationCarOrder(UUID orderID);

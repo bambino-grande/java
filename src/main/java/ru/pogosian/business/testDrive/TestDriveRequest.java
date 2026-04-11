@@ -12,7 +12,7 @@ public class TestDriveRequest {
     private boolean isCarCapableForTestDrive;
     private UUID  testDriveId;
     private UUID clientId;
-    private UUID cartId;
+    private UUID carId;
     private UUID modelId;
     private LocalDateTime testDriveStartAt;
 }

@@ -7,6 +7,7 @@ import java.util.UUID;
 @Builder
 public class InStockCarOrder {
     @Setter
+    @Builder.Default
     private InStockCarOrderStatusState state = new InStockCarOrderPlaced();
     private UUID orderId;
     private UUID clientId;

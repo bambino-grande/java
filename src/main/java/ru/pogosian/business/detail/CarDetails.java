@@ -10,7 +10,7 @@ import java.util.Set;
 @Getter
 public abstract class CarDetails {
     private String name;
-    private UUID id =  UUID.randomUUID();
+    private UUID id;
     private BigDecimal deltaPrice;
     private Set<UUID> compatibleModelsIds;
 
@@ -18,5 +18,12 @@ public abstract class CarDetails {
         this.name = name;
         this.compatibleModelsIds =  compatibleModelsIds;
         this.deltaPrice = deltaPrice;
+        this.id =  UUID.randomUUID();
+    }
+    protected CarDetails(String name, Set<UUID> compatibleModelsIds, BigDecimal deltaPrice, UUID id) {
+        this.name = name;
+        this.compatibleModelsIds =  compatibleModelsIds;
+        this.deltaPrice = deltaPrice;
+        this.id =  id;
     }
 }

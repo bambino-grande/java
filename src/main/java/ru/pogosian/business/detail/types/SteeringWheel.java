@@ -7,7 +7,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public class SteeringWheel extends CarDetails {
-    public SteeringWheel(String name, Set<UUID> id, BigDecimal deltaPrice) {
-        super(name, id, deltaPrice);
+    public SteeringWheel(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice) {
+        super(name, compatibleCarModelsId, deltaPrice);
+    }
+
+    public SteeringWheel(String name, Set<UUID> compatibleCarModelsId, BigDecimal deltaPrice, UUID id) {
+        super(name, compatibleCarModelsId, deltaPrice, id);
     }
 }
