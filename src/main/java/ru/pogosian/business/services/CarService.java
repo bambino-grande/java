@@ -1,6 +1,7 @@
 package ru.pogosian.business.services;
 
 import ru.pogosian.business.cars.Car;
+import ru.pogosian.business.cars.ColorTypes;
 import ru.pogosian.business.filters.Filter;
 
 import java.awt.*;
@@ -13,7 +14,7 @@ public interface CarService {
     void deleteCar(UUID carID);
     Car viewCar(UUID carID);
     List<Car> filteredCars(Filter.CarFilter carFilter);
-    Car createCar(UUID configurationId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive);
-    Car updateCar(UUID carId, UUID configurationId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive);
-    Car CreateCarFromModel(UUID modelId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive);
+    Car createCar(UUID configurationId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive);
+    Car updateCar(UUID carId, UUID configurationId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive);
+    Car CreateCarFromModel(UUID modelId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive);
 }

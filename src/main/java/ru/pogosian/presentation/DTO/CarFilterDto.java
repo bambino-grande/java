@@ -1,9 +1,6 @@
 package ru.pogosian.presentation.DTO;
 
-import ru.pogosian.business.cars.BodyType;
-import ru.pogosian.business.cars.DriveType;
-import ru.pogosian.business.cars.FuelType;
-import ru.pogosian.business.cars.GearboxType;
+import ru.pogosian.business.cars.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -11,7 +8,7 @@ import java.util.Set;
 public record CarFilterDto(
         BigDecimal minPrice,
         BigDecimal maxPrice,
-        Set<String> color,
+        Set<ColorTypes> color,
         Set<String> modelBrand,
         Set<String> modelName,
         int minHorsePower,

@@ -59,7 +59,7 @@ public class CarServiceImpl implements CarService{
 
     @Transactional
     @Override
-    public Car createCar(UUID configurationId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive) {
+    public Car createCar(UUID configurationId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive) {
         Car car = Car.builder()
                 .carId(UUID.randomUUID())
                 .carName(carName)
@@ -75,7 +75,7 @@ public class CarServiceImpl implements CarService{
 
     @Transactional
     @Override
-    public Car updateCar(UUID carId, UUID configurationId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive) {
+    public Car updateCar(UUID carId, UUID configurationId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive) {
         Car car = Car.builder()
                 .carId(carId)
                 .carName(carName)
@@ -91,7 +91,7 @@ public class CarServiceImpl implements CarService{
 
     @Transactional
     @Override
-    public Car CreateCarFromModel(UUID modelId, String carName, Color color, boolean availableForSale, boolean availableForTestDrive) {
+    public Car CreateCarFromModel(UUID modelId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive) {
         DetailFactory wheelFactory = new WheelDetailsFactory();
         DetailFactory interiorFactory = new InterirorFactory();
         DetailFactory transmissionFactory = new TransmissionDetailFactory();

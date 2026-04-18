@@ -1,5 +1,6 @@
 package ru.pogosian.presentation.DTO.response;
 
+import ru.pogosian.business.cars.ColorTypes;
 import ru.pogosian.presentation.DTO.request.CreateOrUpdateCarConfigurationRequest;
 
 import java.awt.*;
@@ -10,7 +11,7 @@ public record CarResponse(
     UUID carId,
     String carName,
     CarConfigurationResponse configuration,
-    String color,
+    ColorTypes color,
     BigDecimal price,
     Boolean availableForSale,
     Boolean availableForTestDrive

@@ -1,9 +1,6 @@
 package ru.pogosian.business.filters;
 
-import ru.pogosian.business.cars.BodyType;
-import ru.pogosian.business.cars.DriveType;
-import ru.pogosian.business.cars.FuelType;
-import ru.pogosian.business.cars.GearboxType;
+import ru.pogosian.business.cars.*;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -13,7 +10,7 @@ public class Filter {
     public record CarFilter(
             BigDecimal minPrice,
             BigDecimal maxPrice,
-            Set<Color> color,
+            Set<ColorTypes> color,
             Set<String> modelBrand,
             Set<String> modelName,
             int minHorsePower,

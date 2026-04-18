@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.descriptor.web.FilterMap;
 import org.springframework.web.bind.annotation.*;
-import ru.pogosian.business.cars.Car;
 import ru.pogosian.business.filters.Filter;
 import ru.pogosian.business.services.CarService;
 import ru.pogosian.presentation.DTO.CarFilterDto;
@@ -19,9 +17,7 @@ import ru.pogosian.presentation.DTO.request.CreateOrUpdateCarRequest;
 import ru.pogosian.presentation.DTO.response.CarResponse;
 import ru.pogosian.presentation.mapper.CarFilterMapper;
 import ru.pogosian.presentation.mapper.CarMapper;
-import ru.pogosian.presentation.mapper.ColorConverter;
 
-import java.awt.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -71,7 +67,7 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     public CarResponse createFromModel(@RequestBody CreateCarFromModelRequest createCarFromModelRequest) {
-        return carMapper.toDto(carService.CreateCarFromModel(createCarFromModelRequest.carModelId(), createCarFromModelRequest.carName(), ColorConverter.stringToColor(createCarFromModelRequest.color()), createCarFromModelRequest.availableForSale(), createCarFromModelRequest.availableForTestDrive()));
+        return carMapper.toDto(carService.CreateCarFromModel(createCarFromModelRequest.carModelId(), createCarFromModelRequest.carName(), createCarFromModelRequest.color(), createCarFromModelRequest.availableForSale(), createCarFromModelRequest.availableForTestDrive()));
     }
 
 
@@ -84,7 +80,7 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     public CarResponse createCar(@RequestBody CreateOrUpdateCarRequest createOrUpdateCarRequest) {
-        return carMapper.toDto(carService.createCar(createOrUpdateCarRequest.configurationId(), createOrUpdateCarRequest.carName(), ColorConverter.stringToColor(createOrUpdateCarRequest.color()), createOrUpdateCarRequest.availableForSale(), createOrUpdateCarRequest.availableForTestDrive()));
+        return carMapper.toDto(carService.createCar(createOrUpdateCarRequest.configurationId(), createOrUpdateCarRequest.carName(), createOrUpdateCarRequest.color(), createOrUpdateCarRequest.availableForSale(), createOrUpdateCarRequest.availableForTestDrive()));
     }
 
 
@@ -97,7 +93,7 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     public CarResponse updateCar(@PathVariable UUID id,@RequestBody CreateOrUpdateCarRequest createOrUpdateCarRequest) {
-        return carMapper.toDto(carService.updateCar(id, createOrUpdateCarRequest.configurationId(), createOrUpdateCarRequest.carName(), ColorConverter.stringToColor(createOrUpdateCarRequest.color()), createOrUpdateCarRequest.availableForSale(), createOrUpdateCarRequest.availableForTestDrive()));
+        return carMapper.toDto(carService.updateCar(id, createOrUpdateCarRequest.configurationId(), createOrUpdateCarRequest.carName(), createOrUpdateCarRequest.color(), createOrUpdateCarRequest.availableForSale(), createOrUpdateCarRequest.availableForTestDrive()));
     }
 
 

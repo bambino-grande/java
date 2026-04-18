@@ -2,6 +2,7 @@ package ru.pogosian.infrastructure.repository.Specification;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import ru.pogosian.business.cars.ColorTypes;
 import ru.pogosian.business.filters.Filter;
 import ru.pogosian.infrastructure.repository.JpaEntity.CarConfigurationJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.CarJpaEntity;
@@ -37,7 +38,7 @@ public final class CarJpaSpecifications {
         return (root, query, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("removed"));
     }
 
-    private static Specification<CarJpaEntity> hasColors(Set<Color> colors) {
+    private static Specification<CarJpaEntity> hasColors(Set<ColorTypes> colors) {
         return (root, query, criteriaBuilder) -> {
             if (colors == null || colors.isEmpty()) {
                 return criteriaBuilder.conjunction();

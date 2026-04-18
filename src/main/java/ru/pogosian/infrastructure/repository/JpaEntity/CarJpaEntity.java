@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
+import ru.pogosian.business.cars.ColorTypes;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -21,9 +22,9 @@ public class CarJpaEntity extends BaseJpaEntity{
     @JoinColumn(name = "configuration_id", nullable = false)
     private CarConfigurationJpaEntity configuration;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Convert(converter = ColorConverter.class)
-    private Color color;
+    private ColorTypes color;
 
     @Column(nullable = false)
     private BigDecimal price;
