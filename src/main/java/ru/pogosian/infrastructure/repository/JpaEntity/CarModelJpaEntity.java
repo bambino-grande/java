@@ -1,7 +1,9 @@
 package ru.pogosian.infrastructure.repository.JpaEntity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
 import ru.pogosian.business.cars.BodyType;
@@ -13,9 +15,9 @@ import ru.pogosian.infrastructure.repository.JpaEntity.CarDetail.CarDetailJpaEnt
 
 import java.math.BigDecimal;
 import java.util.Set;
+import java.util.UUID;
 
 
-@Setter
 @Getter
 @Entity
 @Table(name = "car_model")
@@ -70,4 +72,18 @@ public class CarModelJpaEntity extends BaseJpaEntity{
     @SQLRestriction("removed = false")
     private Set<CarDetailJpaEntity> availableDetails;
 
+    public CarModelJpaEntity(UUID modelId, String modelBrand, String modelName, BodyType bodyType, Set<CarDetailJpaEntity> collect, BigDecimal basePrice, FuelType fuelType, int horsePower, double engineVolume, GearboxType gearboxType, DriveType driveType, Set<CarDetailJpaEntity> collect1) {
+        super(modelId);
+        this.modelBrand = modelBrand;
+        this.modelName = modelName;
+        this.bodyType = bodyType;
+        this.basePrice = basePrice;
+        this.fuelType = fuelType;
+        this.horsePower = horsePower;
+        this.engineVolume = engineVolume;
+        this.gearboxType = gearboxType;
+        this.driveType = driveType;
+        this.details = collect;
+        this.availableDetails = collect1;
+    }
 }

@@ -2,13 +2,12 @@ package ru.pogosian.infrastructure.repository.JpaEntity.InStockCarOrder;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.SQLRestriction;
+import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrderStatusState;
 import ru.pogosian.infrastructure.repository.JpaEntity.BaseJpaEntity;
 
 import java.util.UUID;
 
-@Setter
 @Getter
 @Entity
 @Table(name = "in_stock_car_orders")
@@ -26,4 +25,12 @@ public class InStockCarOrderJpaEntity extends BaseJpaEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private InStockCarOrderStage stage;
+
+    public InStockCarOrderJpaEntity(UUID id, UUID clientId, UUID managerId, UUID carId, InStockCarOrderStage stage) {
+        super(id);
+        this.clientId = clientId;
+        this.managerId = managerId;
+        this.carId = carId;
+        this.stage = stage;
+    }
 }

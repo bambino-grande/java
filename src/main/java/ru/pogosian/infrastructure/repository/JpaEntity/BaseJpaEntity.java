@@ -1,7 +1,9 @@
 package ru.pogosian.infrastructure.repository.JpaEntity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,4 +30,8 @@ public abstract class BaseJpaEntity {
 
     @Column(nullable = false)
     private boolean removed;
+
+    public BaseJpaEntity(UUID id) {
+        this.id = id;
+    }
 }

@@ -2,9 +2,10 @@ package ru.pogosian.infrastructure.repository.JpaEntity;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
 import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.infrastructure.repository.JpaEntity.CarDetail.CarDetailJpaEntity;
 
@@ -13,10 +14,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-@Setter
 @Entity
+@Setter
 @Table(name = "car_configuration")
-@SQLRestriction("removed = false")
 public class CarConfigurationJpaEntity extends BaseJpaEntity{
     @Column(name = "configuration_model_id", nullable = false)
     private UUID configurationModelId;
@@ -34,6 +34,12 @@ public class CarConfigurationJpaEntity extends BaseJpaEntity{
             joinColumns = @JoinColumn(name = "configuration_id"),
             inverseJoinColumns = @JoinColumn(name = "detail_id")
     )
-    @SQLRestriction("removed = false")
     private Set<CarDetailJpaEntity> usedDetails;
+
+    public CarConfigurationJpaEntity(UUID configurationId, UUID configurationModelId, BigDecimal totalPrice, Set<CarDetailJpaEntity> collect) {
+        super(configurationId);
+        this.configurationModelId = configurationModelId;
+        this.totalPrice = totalPrice;
+        this.usedDetails = collect;
+    }
 }

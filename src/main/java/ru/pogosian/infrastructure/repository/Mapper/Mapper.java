@@ -29,7 +29,6 @@ import ru.pogosian.infrastructure.repository.JpaEntity.User.UserJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.User.UserType;
 
 import java.awt.*;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -82,13 +81,13 @@ public class Mapper {
     }
 
     public CarDetailJpaEntity toJpaEntity(CarDetails details) {
-        CarDetailJpaEntity detailJpaEntity = new CarDetailJpaEntity();
-        detailJpaEntity.setName(details.getName());
-        detailJpaEntity.setCompatibleModelsIds(details.getCompatibleModelsIds());
-        detailJpaEntity.setId(details.getId());
-        detailJpaEntity.setDeltaPrice(details.getDeltaPrice());
-        detailJpaEntity.setDetailTypes(getDetailType(details));
-        return detailJpaEntity;
+        return new CarDetailJpaEntity(
+                details.getId(),
+                details.getName(),
+                details.getDeltaPrice(),
+                details.getCompatibleModelsIds(),
+                getDetailType(details)
+        );
     }
 
     /*--------------------------Car--------------------------*/
@@ -104,16 +103,10 @@ public class Mapper {
                 .build();
     }
 
+
+
     public CarJpaEntity toJpaEntity(Car car) {
-        CarJpaEntity carJpaEntity = new CarJpaEntity();
-        carJpaEntity.setId(car.getCarId());
-        carJpaEntity.setCarName(car.getCarName());
-        carJpaEntity.setConfiguration(toJpaEntity(car.getConfiguration()));
-        carJpaEntity.setColor(car.getColor());
-        carJpaEntity.setPrice(car.getPrice());
-        carJpaEntity.setAvailableForSale(car.getAvailableForSale());
-        carJpaEntity.setAvailableForTestDrive(car.getAvailableForTestDrive());
-        return carJpaEntity;
+        return new CarJpaEntity(car.getCarId(), car.getCarName(), toJpaEntity(car.getConfiguration()), car.getColor(), car.getPrice(), car.getAvailableForSale(), car.getAvailableForTestDrive());
     }
 
     /*--------------------------CarConfiguration--------------------------*/
@@ -127,12 +120,13 @@ public class Mapper {
     }
 
     public CarConfigurationJpaEntity toJpaEntity(CarConfiguration carConfiguration) {
-        CarConfigurationJpaEntity carConfigurationJpaEntity = new CarConfigurationJpaEntity();
-        carConfigurationJpaEntity.setId(carConfiguration.getConfigurationId());
-        carConfigurationJpaEntity.setConfigurationModelId(carConfiguration.getConfigurationModelId());
-        carConfigurationJpaEntity.setTotalPrice(carConfiguration.getTotalPrice());
-        carConfigurationJpaEntity.setUsedDetails(carConfiguration.getUsedDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet()));
-        return carConfigurationJpaEntity;
+        return new CarConfigurationJpaEntity(
+            carConfiguration.getConfigurationId(),
+            carConfiguration.getConfigurationModelId(),
+            carConfiguration.getTotalPrice(),
+            carConfiguration.getUsedDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet())
+        );
+
     }
 
     /*--------------------------CarModel--------------------------*/
@@ -154,22 +148,21 @@ public class Mapper {
     }
 
     public CarModelJpaEntity toJpaEntity(CarModel carModel) {
-        CarModelJpaEntity carModelJpaEntity = new CarModelJpaEntity();
-        carModelJpaEntity.setId(carModel.getModelId());
-        carModelJpaEntity.setModelBrand(carModel.getModelBrand());
-        carModelJpaEntity.setModelName(carModel.getModelName());
-        carModelJpaEntity.setBodyType(carModel.getBodyType());
-        carModelJpaEntity.setAvailableDetails(carModel.getAvailableDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet()));
-        carModelJpaEntity.setBasePrice(carModel.getBasePrice());
-        carModelJpaEntity.setFuelType(carModel.getFuelType());
-        carModelJpaEntity.setHorsePower(carModel.getHorsePower());
-        carModelJpaEntity.setEngineVolume(carModel.getEngineVolume());
-        carModelJpaEntity.setGearboxType(carModel.getGearboxType());
-        carModelJpaEntity.setDriveType(carModel.getDriveType());
-        carModelJpaEntity.setDetails(carModel.getDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet()));
-        return carModelJpaEntity;
+        return new CarModelJpaEntity(
+                carModel.getModelId(),
+                carModel.getModelBrand(),
+                carModel.getModelName(),
+                carModel.getBodyType(),
+                carModel.getAvailableDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet()),
+                carModel.getBasePrice(),
+                carModel.getFuelType(),
+                carModel.getHorsePower(),
+                carModel.getEngineVolume(),
+                carModel.getGearboxType(),
+                carModel.getDriveType(),
+                carModel.getDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet())
+        );
     }
-
     /*--------------------------InStockCarOrder--------------------------*/
     public InStockCarOrder toDomain(InStockCarOrderJpaEntity inStockCarOrderJpaEntity) {
         return InStockCarOrder.builder()
@@ -181,14 +174,14 @@ public class Mapper {
                 .build();
     }
 
-    public  InStockCarOrderJpaEntity toJpaEntity(InStockCarOrder inStockCarOrder) {
-        InStockCarOrderJpaEntity inStockCarOrderJpaEntity = new InStockCarOrderJpaEntity();
-        inStockCarOrderJpaEntity.setId(inStockCarOrder.getOrderId());
-        inStockCarOrderJpaEntity.setClientId(inStockCarOrder.getClientId());
-        inStockCarOrderJpaEntity.setManagerId(inStockCarOrder.getManagerId());
-        inStockCarOrderJpaEntity.setCarId(inStockCarOrder.getCarId());
-        inStockCarOrderJpaEntity.setStage(toJpaEntity(inStockCarOrder.getState()));
-        return inStockCarOrderJpaEntity;
+    public InStockCarOrderJpaEntity toJpaEntity(InStockCarOrder inStockCarOrder) {
+        return new InStockCarOrderJpaEntity(
+            inStockCarOrder.getOrderId(),
+            inStockCarOrder.getClientId(),
+            inStockCarOrder.getManagerId(),
+            inStockCarOrder.getCarId(),
+            toJpaEntity(inStockCarOrder.getState())
+        );
     }
 
     /*--------------------------ComplectationCarOrder--------------------------*/
@@ -203,13 +196,13 @@ public class Mapper {
     }
 
     public ComplectationCarOrderJpaEntity toJpaEntity(ComplectationCarOrder complectationCarOrder) {
-        ComplectationCarOrderJpaEntity complectationCarOrderJpaEntity = new ComplectationCarOrderJpaEntity();
-        complectationCarOrderJpaEntity.setId(complectationCarOrder.getOrderId());
-        complectationCarOrderJpaEntity.setClientId(complectationCarOrder.getClientId());
-        complectationCarOrderJpaEntity.setManagerId(complectationCarOrder.getManagerId());
-        complectationCarOrderJpaEntity.setCarId(complectationCarOrder.getCarId());
-        complectationCarOrderJpaEntity.setStage(toJpaEntity(complectationCarOrder.getState()));
-        return complectationCarOrderJpaEntity;
+        return new ComplectationCarOrderJpaEntity(
+            complectationCarOrder.getOrderId(),
+            complectationCarOrder.getClientId(),
+            complectationCarOrder.getManagerId(),
+            complectationCarOrder.getCarId(),
+            toJpaEntity(complectationCarOrder.getState())
+        );
     }
     /*--------------------------CarOrderStages--------------------------*/
 
@@ -330,14 +323,14 @@ public class Mapper {
                 .build();
     }
     public TestDriveRequestJpaEntity toJpaEntity(TestDriveRequest testDriveRequest) {
-        TestDriveRequestJpaEntity testDriveRequestJpaEntity = new TestDriveRequestJpaEntity();
-        testDriveRequestJpaEntity.setCarId(testDriveRequest.getCarId());
-        testDriveRequestJpaEntity.setId(testDriveRequest.getTestDriveId());
-        testDriveRequestJpaEntity.setClientId(testDriveRequest.getClientId());
-        testDriveRequestJpaEntity.setModelId(testDriveRequest.getModelId());
-        testDriveRequestJpaEntity.setCarCapableForTestDrive(testDriveRequest.isCarCapableForTestDrive());
-        testDriveRequestJpaEntity.setTestDriveStartAt(testDriveRequest.getTestDriveStartAt());
-        return  testDriveRequestJpaEntity;
+        return new TestDriveRequestJpaEntity(
+            testDriveRequest.getCarId(),
+            testDriveRequest.isCarCapableForTestDrive(),
+            testDriveRequest.getTestDriveId(),
+            testDriveRequest.getClientId(),
+            testDriveRequest.getModelId(),
+            testDriveRequest.getTestDriveStartAt()
+        );
     }
 
     /*--------------------------TestDriveRequest--------------------------*/
@@ -354,11 +347,11 @@ public class Mapper {
     }
 
     public UserJpaEntity toJpaEntity(User user) {
-        UserJpaEntity userJpaEntity = new UserJpaEntity();
-        userJpaEntity.setId(user.getId());
-        userJpaEntity.setName(user.getName());
-        userJpaEntity.setType(getUserType(user));
-        return userJpaEntity;
+        return new UserJpaEntity(
+            user.getId(),
+            user.getName(),
+            getUserType(user)
+        );
     }
 
     private UserType getUserType(User user){
