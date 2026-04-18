@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.pogosian.business.cars.CarConfiguration;
 import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.services.CarService;
 import ru.pogosian.presentation.DTO.request.CreateOrUpdateCarConfigurationRequest;
@@ -31,8 +32,6 @@ import java.util.stream.Collectors;
 public class CarConfigurationController {
     private final CarConfigurationMapper carConfigurationMapper;
     private final BuildConfigurationService buildCarConfigurationService;
-    private final CarDetailMapper carDetailMapper;
-
 
      @PostMapping
      @Operation(summary = "создать комплектацию автомобиля", description = "АПРУВ, ПЖ🥹🥹")
@@ -43,7 +42,8 @@ public class CarConfigurationController {
              @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
      })
      public CarConfigurationResponse buildConfiguration(@RequestBody CreateOrUpdateCarConfigurationRequest createOrUpdateCarConfigurationRequest) {
-        Set<CarDetails> usedDetails = createOrUpdateCarConfigurationRequest.usedDetails().stream().map(carDetailMapper::toDomain).collect(Collectors.toSet());
-        return carConfigurationMapper.toDto(buildCarConfigurationService.buildCarConfiguration(createOrUpdateCarConfigurationRequest.configurationModelId(), usedDetails));
-    }
+         CarConfiguration configuration = carConfigurationMapper.toDomain(createOrUpdateCarConfigurationRequest);
+         CarConfiguration builtConfiguration = buildCarConfigurationService.buildCarConfiguration(configuration.getConfigurationModelId(), configuration.getUsedDetails());
+         return carConfigurationMapper.toDto(builtConfiguration);
+     }
 }

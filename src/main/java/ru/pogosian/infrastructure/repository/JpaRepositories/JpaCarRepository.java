@@ -14,15 +14,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaCarRepository extends JpaRepository<CarJpaEntity, UUID>, JpaSpecificationExecutor<CarJpaEntity> {
+    @Override
     @EntityGraph(attributePaths = {"configuration", "configuration.carModel", "configuration.usedDetails"})
-    List<CarJpaEntity> findAllByRemovedFalse();
+    List<CarJpaEntity> findAll();
 
+    @Override
     @EntityGraph(attributePaths = {"configuration", "configuration.carModel", "configuration.usedDetails"})
-    Optional<CarJpaEntity> findByIdAndRemovedFalse(UUID id);
+    Optional<CarJpaEntity> findById(UUID id);
 
     @Override
     @EntityGraph(attributePaths = {"configuration", "configuration.carModel", "configuration.usedDetails"})
     List<CarJpaEntity> findAll(Specification<CarJpaEntity> specification);
-
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

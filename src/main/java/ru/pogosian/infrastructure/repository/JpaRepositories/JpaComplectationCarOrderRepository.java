@@ -11,7 +11,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaComplectationCarOrderRepository extends JpaRepository<ComplectationCarOrderJpaEntity, UUID> {
-    Page<ComplectationCarOrderJpaEntity> findAllByRemovedFalse(Pageable pageable);
-    Optional<ComplectationCarOrderJpaEntity> findByIdAndRemovedFalse(UUID id);
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

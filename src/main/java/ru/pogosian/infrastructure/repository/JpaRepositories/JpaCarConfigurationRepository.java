@@ -13,11 +13,11 @@ import java.util.UUID;
 
 
 public interface JpaCarConfigurationRepository extends JpaRepository<CarConfigurationJpaEntity, UUID>{
+    @Override
     @EntityGraph(attributePaths = {"carModel", "usedDetails"})
-    Optional<CarConfigurationJpaEntity> findByIdAndRemovedFalse(UUID id);
+    Optional<CarConfigurationJpaEntity> findById(UUID id);
 
-    boolean existsByIdAndRemovedFalse(UUID id);
-
+    @Override
     @EntityGraph(attributePaths = {"carModel", "usedDetails"})
-    List<CarConfigurationJpaEntity> findAllByRemovedFalse();
+    List<CarConfigurationJpaEntity> findAll();
 }

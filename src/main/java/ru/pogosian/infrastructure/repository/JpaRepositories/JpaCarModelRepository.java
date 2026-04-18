@@ -9,7 +9,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaCarModelRepository extends JpaRepository<CarModelJpaEntity, UUID> {
-    List<CarModelJpaEntity> findAllByRemovedFalse();
-    Optional<CarModelJpaEntity> findByIdAndRemovedFalse(UUID id);
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

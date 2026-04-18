@@ -31,21 +31,17 @@ public class JpaCarDetailRepositoryAdapter implements CarDetailsRepository {
 
     @Override
     public CarDetails findById(UUID id) {
-        if(!jpaCarDetailRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("Car detail with id " + id + " does not exist");
-        return mapper.toDomain(jpaCarDetailRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(jpaCarDetailRepository.findById(id).orElseThrow(() -> new DomainValidationException("Car detail with id " + id + " does not exist")));
     }
 
     @Override
     public List<CarDetails> findAll(Pageable pageable) {
-        return jpaCarDetailRepository.findAllByRemovedFalse(pageable).getContent().stream().map(mapper::toDomain).toList();
+        return jpaCarDetailRepository.findAll(pageable).getContent().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!jpaCarDetailRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("Car detail with id " + id + " does not exist");
-        CarDetailJpaEntity CarDetailJpaEntity = jpaCarDetailRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        CarDetailJpaEntity CarDetailJpaEntity = jpaCarDetailRepository.findById(id).orElseThrow(() -> new DomainValidationException("Car detail with id " + id + " does not exist"));
         CarDetailJpaEntity.setRemoved(true);
         jpaCarDetailRepository.save(CarDetailJpaEntity);
     }

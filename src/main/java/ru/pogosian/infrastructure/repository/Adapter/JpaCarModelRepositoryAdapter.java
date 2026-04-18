@@ -29,21 +29,17 @@ public class JpaCarModelRepositoryAdapter implements CarModelRepository {
 
     @Override
     public CarModel findById(UUID id) {
-        if(!jpaCarModelRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("Car model with id " + id + " does not exist");
-        return mapper.toDomain(jpaCarModelRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(jpaCarModelRepository.findById(id).orElseThrow(() -> new DomainValidationException("Car model with id " + id + " does not exist")));
     }
 
     @Override
     public List<CarModel> findAll() {
-        return jpaCarModelRepository.findAllByRemovedFalse().stream().map(mapper::toDomain).toList();
+        return jpaCarModelRepository.findAll().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!jpaCarModelRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("Car model with id " + id + " does not exist");
-        CarModelJpaEntity CarModelJpaEntity = jpaCarModelRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        CarModelJpaEntity CarModelJpaEntity = jpaCarModelRepository.findById(id).orElseThrow(() -> new DomainValidationException("Car model with id " + id + " does not exist"));
         CarModelJpaEntity.setRemoved(true);
         jpaCarModelRepository.save(CarModelJpaEntity);
     }

@@ -11,7 +11,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaCarDetailRepository extends JpaRepository<CarDetailJpaEntity, UUID> {
-    Page<CarDetailJpaEntity> findAllByRemovedFalse(Pageable pageable);
-    Optional<CarDetailJpaEntity> findByIdAndRemovedFalse(UUID id);
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

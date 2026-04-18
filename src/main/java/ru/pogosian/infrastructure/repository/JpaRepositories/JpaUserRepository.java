@@ -9,7 +9,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaUserRepository extends JpaRepository<UserJpaEntity, UUID> {
-    List<UserJpaEntity> findAllByRemovedFalse();
-    Optional<UserJpaEntity> findByIdAndRemovedFalse(UUID id);
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

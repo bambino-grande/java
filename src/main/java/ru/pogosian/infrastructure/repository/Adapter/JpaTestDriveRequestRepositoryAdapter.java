@@ -28,21 +28,17 @@ public class JpaTestDriveRequestRepositoryAdapter implements TestDriveRequestRep
     }
      @Override
     public TestDriveRequest findById(UUID id) {
-        if(!JpaTestDriveRequestRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("TestDriveRequest with id " + id + " does not exist");
-        return mapper.toDomain(JpaTestDriveRequestRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(JpaTestDriveRequestRepository.findById(id).orElseThrow(() -> new DomainValidationException("TestDriveRequest with id " + id + " does not exist")));
     }
 
     @Override
     public List<TestDriveRequest> findAll(Pageable pageable) {
-        return JpaTestDriveRequestRepository.findAllByRemovedFalse(pageable).stream().map(mapper::toDomain).toList();
+        return JpaTestDriveRequestRepository.findAll(pageable).stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!JpaTestDriveRequestRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("TestDriveRequest with id " + id + " does not exist");
-        TestDriveRequestJpaEntity TestDriveRequestJpaEntity = JpaTestDriveRequestRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        TestDriveRequestJpaEntity TestDriveRequestJpaEntity = JpaTestDriveRequestRepository.findById(id).orElseThrow(() -> new DomainValidationException("TestDriveRequest with id " + id + " does not exist"));
         TestDriveRequestJpaEntity.setRemoved(true);
         JpaTestDriveRequestRepository.save(TestDriveRequestJpaEntity);
     }

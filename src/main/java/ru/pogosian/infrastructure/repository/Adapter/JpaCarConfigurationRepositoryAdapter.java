@@ -37,28 +37,26 @@ public class JpaCarConfigurationRepositoryAdapter implements CarConfigurationRep
         Set<CarDetailJpaEntity> usedDetails = new HashSet<>();
 
         carConfiguration.getUsedDetails().forEach(carDetail -> {
-            usedDetails.add(carDetailRepository.findByIdAndRemovedFalse(carDetail.getId()).orElseThrow());
+            usedDetails.add(carDetailRepository.findById(carDetail.getId()).orElseThrow(() -> new DomainValidationException("Car detail with id " + carDetail.getId() + " does not exist")));
         });
-        carConfigurationRepository.save(mapper.toJpaEntity(carConfiguration));
+        CarConfigurationJpaEntity entity = mapper.toJpaEntity(carConfiguration);
+        entity.setUsedDetails(usedDetails);
+        carConfigurationRepository.save(entity);
     }
 
     @Override
     public CarConfiguration findById(UUID id) {
-        if(!carConfigurationRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
-        return mapper.toDomain(carConfigurationRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(carConfigurationRepository.findById(id).orElseThrow(() -> new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist")));
     }
 
     @Override
     public List<CarConfiguration> findAll() {
-        return carConfigurationRepository.findAllByRemovedFalse().stream().map(mapper::toDomain).toList();
+        return carConfigurationRepository.findAll().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!carConfigurationRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
-        CarConfigurationJpaEntity carConfigurationJpaEntity = carConfigurationRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        CarConfigurationJpaEntity carConfigurationJpaEntity = carConfigurationRepository.findById(id).orElseThrow(() -> new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist"));
         carConfigurationJpaEntity.setRemoved(true);
         carConfigurationRepository.save(carConfigurationJpaEntity);
     }

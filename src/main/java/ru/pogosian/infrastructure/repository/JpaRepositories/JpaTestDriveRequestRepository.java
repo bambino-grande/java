@@ -11,7 +11,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaTestDriveRequestRepository extends JpaRepository<TestDriveRequestJpaEntity, UUID> {
-    Page<TestDriveRequestJpaEntity> findAllByRemovedFalse(Pageable pageable);
-    Optional<TestDriveRequestJpaEntity> findByIdAndRemovedFalse(UUID id);
-    boolean existsByIdAndRemovedFalse(UUID id);
 }

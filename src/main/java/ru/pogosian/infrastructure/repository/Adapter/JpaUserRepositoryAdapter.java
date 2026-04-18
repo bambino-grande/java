@@ -28,21 +28,17 @@ public class JpaUserRepositoryAdapter implements UserRepository {
 
     @Override
     public User findById(UUID id) {
-        if(!JpaUserRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("User with id " + id + " does not exist");
-        return mapper.toDomain(JpaUserRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(JpaUserRepository.findById(id).orElseThrow(() -> new DomainValidationException("User with id " + id + " does not exist")));
     }
 
     @Override
     public List<User> findAll() {
-        return JpaUserRepository.findAllByRemovedFalse().stream().map(mapper::toDomain).toList();
+        return JpaUserRepository.findAll().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!JpaUserRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("User with id " + id + " does not exist");
-        UserJpaEntity UserJpaEntity = JpaUserRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        UserJpaEntity UserJpaEntity = JpaUserRepository.findById(id).orElseThrow(() -> new DomainValidationException("User with id " + id + " does not exist"));
         UserJpaEntity.setRemoved(true);
         JpaUserRepository.save(UserJpaEntity);
     }

@@ -7,6 +7,7 @@ import ru.pogosian.business.cars.CarConfiguration;
 import ru.pogosian.business.cars.CarModel;
 import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.repositories.CarConfigurationRepository;
+import ru.pogosian.business.repositories.CarDetailsRepository;
 import ru.pogosian.business.repositories.CarModelRepository;
 
 import java.math.BigDecimal;
@@ -19,12 +20,16 @@ import java.util.Set;
 public class buildConfigurationServiceImpl implements BuildConfigurationService {
     private final CarModelRepository usingCarModelRepository;
     private final CarConfigurationRepository usingConfigurationRepository;
+    private final CarDetailsRepository carDetailsRepository;
 
     @Transactional
     @Override
     public CarConfiguration buildCarConfiguration(UUID modelId, Set<CarDetails> usedDetails) {
         CarModel model = usingCarModelRepository.findById(modelId);
-        
+        for (CarDetails detail : usedDetails) {
+            carDetailsRepository.save(detail);
+        }
+
         BigDecimal totalPrice = model.getBasePrice();
         for (CarDetails detail : usedDetails) {
             totalPrice = totalPrice.add(detail.getDeltaPrice());

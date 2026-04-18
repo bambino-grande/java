@@ -3,6 +3,7 @@ package ru.pogosian.infrastructure.repository.JpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 import ru.pogosian.business.cars.BodyType;
 import ru.pogosian.business.cars.DriveType;
 import ru.pogosian.business.cars.FuelType;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "car_model")
+@SQLRestriction("removed = false")
 public class CarModelJpaEntity extends BaseJpaEntity{
     @Column (nullable = false)
     private String modelBrand;
@@ -56,6 +58,7 @@ public class CarModelJpaEntity extends BaseJpaEntity{
             joinColumns = @JoinColumn(name = "model_id"),
             inverseJoinColumns = @JoinColumn(name = "detail_id")
     )
+    @SQLRestriction("removed = false")
     private Set<CarDetailJpaEntity> details;
 
     @ManyToMany
@@ -64,6 +67,7 @@ public class CarModelJpaEntity extends BaseJpaEntity{
             joinColumns = @JoinColumn(name = "model_id"),
             inverseJoinColumns = @JoinColumn(name = "detail_id")
     )
+    @SQLRestriction("removed = false")
     private Set<CarDetailJpaEntity> availableDetails;
 
 }

@@ -28,21 +28,17 @@ public class JpaInStockCarOrderRepositoryAdapter implements InStockCarOrderRepos
 
     @Override
     public InStockCarOrder findById(UUID id) {
-        if(!JpaInStockCarOrderRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("InStockCarOrder with id " + id + " does not exist");
-        return mapper.toDomain(JpaInStockCarOrderRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(JpaInStockCarOrderRepository.findById(id).orElseThrow(() -> new DomainValidationException("InStockCarOrder with id " + id + " does not exist")));
     }
 
     @Override
     public List<InStockCarOrder> findAll(Pageable pageable) {
-        return JpaInStockCarOrderRepository.findAllByRemovedFalse(pageable).getContent().stream().map(mapper::toDomain).toList();
+        return JpaInStockCarOrderRepository.findAll(pageable).getContent().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!JpaInStockCarOrderRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("InStockCarOrder with id " + id + " does not exist");
-        InStockCarOrderJpaEntity InStockCarOrderJpaEntity = JpaInStockCarOrderRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        InStockCarOrderJpaEntity InStockCarOrderJpaEntity = JpaInStockCarOrderRepository.findById(id).orElseThrow(() -> new DomainValidationException("InStockCarOrder with id " + id + " does not exist"));
         InStockCarOrderJpaEntity.setRemoved(true);
         JpaInStockCarOrderRepository.save(InStockCarOrderJpaEntity);
     }

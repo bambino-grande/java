@@ -3,6 +3,7 @@ package ru.pogosian.infrastructure.repository.JpaEntity.ComplectationCarOrder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 import ru.pogosian.business.orders.complectationCarOrder.CompectationCarOrderStatusState;
 import ru.pogosian.infrastructure.repository.JpaEntity.BaseJpaEntity;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Table(name = "complectation_car_orders")
+@SQLRestriction("removed = false")
 public class ComplectationCarOrderJpaEntity extends BaseJpaEntity {
     @Column
     private UUID clientId;

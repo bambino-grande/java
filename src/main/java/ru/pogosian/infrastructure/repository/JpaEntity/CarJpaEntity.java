@@ -3,6 +3,7 @@ package ru.pogosian.infrastructure.repository.JpaEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.awt.*;
 import java.math.BigDecimal;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "cars")
+@SQLRestriction("removed = false")
 public class CarJpaEntity extends BaseJpaEntity{
     @Column(unique = true,  nullable = false)
     private String carName;

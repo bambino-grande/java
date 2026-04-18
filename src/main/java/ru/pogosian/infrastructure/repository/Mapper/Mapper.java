@@ -325,13 +325,13 @@ public class Mapper {
                 .isCarCapableForTestDrive(testDriveRequestJpaEntity.isCarCapableForTestDrive())
                 .testDriveStartAt(testDriveRequestJpaEntity.getTestDriveStartAt())
                 .modelId(testDriveRequestJpaEntity.getModelId())
-                .carId(testDriveRequestJpaEntity.getCartId())
+                .carId(testDriveRequestJpaEntity.getCarId())
                 .clientId(testDriveRequestJpaEntity.getClientId())
                 .build();
     }
     public TestDriveRequestJpaEntity toJpaEntity(TestDriveRequest testDriveRequest) {
         TestDriveRequestJpaEntity testDriveRequestJpaEntity = new TestDriveRequestJpaEntity();
-        testDriveRequestJpaEntity.setCartId(testDriveRequest.getCarId());
+        testDriveRequestJpaEntity.setCarId(testDriveRequest.getCarId());
         testDriveRequestJpaEntity.setId(testDriveRequest.getTestDriveId());
         testDriveRequestJpaEntity.setClientId(testDriveRequest.getClientId());
         testDriveRequestJpaEntity.setModelId(testDriveRequest.getModelId());

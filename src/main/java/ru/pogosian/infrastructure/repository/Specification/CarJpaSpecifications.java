@@ -15,10 +15,10 @@ import java.util.Set;
 public final class CarJpaSpecifications {
     public static Specification<CarJpaEntity> byFilter(Filter.CarFilter filter) {
         if (filter == null) {
-            return notRemoved();
+            return Specification.where(null);
         }
 
-        return Specification.where(notRemoved())
+        return Specification.where(maxEngineVolume(filter.maxEngineVolume()))
                 .and(hasColors(filter.color()))
                 .and(hasModelBrands(filter.modelBrand()))
                 .and(hasModelNames(filter.modelName()))
@@ -30,8 +30,7 @@ public final class CarJpaSpecifications {
                 .and(maxPrice(filter.maxPrice()))
                 .and(minHorsePower(filter.minHorsePower()))
                 .and(maxHorsePower(filter.maxHorsePower()))
-                .and(minEngineVolume(filter.minEngineVolume()))
-                .and(maxEngineVolume(filter.maxEngineVolume()));
+                .and(minEngineVolume(filter.minEngineVolume()));
     }
 
     private static Specification<CarJpaEntity> notRemoved() {

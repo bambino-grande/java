@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "test_drive_request")
+@SQLRestriction("removed = false")
 public class TestDriveRequestJpaEntity extends BaseJpaEntity {
     @Column(nullable = false)
     private boolean isCarCapableForTestDrive;
@@ -21,7 +23,7 @@ public class TestDriveRequestJpaEntity extends BaseJpaEntity {
     private UUID clientId;
 
     @Column(nullable = false)
-    private UUID cartId;
+    private UUID carId;
 
     @Column(nullable = false)
     private UUID modelId;

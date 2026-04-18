@@ -16,7 +16,6 @@ import java.util.UUID;
 @Setter
 public abstract class BaseJpaEntity {
     @Id
-    @GeneratedValue
     private UUID id;
 
     @CreatedDate

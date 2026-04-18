@@ -31,21 +31,17 @@ public class JpaComplectationCarOrderRepositoryAdapter implements ComplectationC
 
     @Override
     public ComplectationCarOrder findById(UUID id) {
-        if(!jpaComplectationCarOrderRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
-        return mapper.toDomain(jpaComplectationCarOrderRepository.findByIdAndRemovedFalse(id).orElseThrow());
+        return mapper.toDomain(jpaComplectationCarOrderRepository.findById(id).orElseThrow(() -> new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist")));
     }
 
     @Override
     public List<ComplectationCarOrder> findAll(Pageable pageable) {
-        return jpaComplectationCarOrderRepository.findAllByRemovedFalse(pageable).getContent().stream().map(mapper::toDomain).toList();
+        return jpaComplectationCarOrderRepository.findAll(pageable).getContent().stream().map(mapper::toDomain).toList();
     }
 
     @Override
     public void deleteById(UUID id) {
-        if(!jpaComplectationCarOrderRepository.existsByIdAndRemovedFalse(id))
-            throw new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist");
-        ComplectationCarOrderJpaEntity ComplectationCarOrderJpaEntity = jpaComplectationCarOrderRepository.findByIdAndRemovedFalse(id).orElseThrow();
+        ComplectationCarOrderJpaEntity ComplectationCarOrderJpaEntity = jpaComplectationCarOrderRepository.findById(id).orElseThrow(() -> new DomainValidationException("ComplectationCarOrder with id " + id + " does not exist"));
         ComplectationCarOrderJpaEntity.setRemoved(true);
         jpaComplectationCarOrderRepository.save(ComplectationCarOrderJpaEntity);
     }

@@ -116,6 +116,8 @@ public class CarServiceImpl implements CarService{
                 .usedDetails(baseDetails)
                 .build();
 
+        carConfigurationRepository.save(base);
+
         Car car = Car.builder()
                 .carId(UUID.randomUUID())
                 .carName(carName)
