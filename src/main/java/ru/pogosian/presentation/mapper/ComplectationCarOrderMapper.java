@@ -17,10 +17,6 @@ public interface ComplectationCarOrderMapper {
     @Mapping(target = "stage", source = "state", qualifiedByName = "toDtoStage")
     ComplectationCarOrderResponse toDto(ComplectationCarOrder complectationCarOrder);
 
-    @Mapping(target = "orderId", ignore = true)
-    @Mapping(target = "state", ignore = true)
-    ComplectationCarOrder toDomain(CreateComplectationCarOrderRequest request);
-
     @Mapping(target = "orderId", source = "orderId")
     @Mapping(target = "state", source = "request.stage", qualifiedByName = "toDomainStage")
     ComplectationCarOrder toDomain(UpdateComplectationCarOrderRequest request, UUID orderId);

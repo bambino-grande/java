@@ -42,4 +42,9 @@ public class JpaInStockCarOrderRepositoryAdapter implements InStockCarOrderRepos
         InStockCarOrderJpaEntity.setRemoved(true);
         JpaInStockCarOrderRepository.save(InStockCarOrderJpaEntity);
     }
+
+    @Override
+    public List<InStockCarOrder> findAllByClientId(UUID clientId, Pageable pageable) {
+        return JpaInStockCarOrderRepository.findAllByClientId(clientId, pageable).getContent().stream().map(mapper::toDomain).toList();
+    }
 }

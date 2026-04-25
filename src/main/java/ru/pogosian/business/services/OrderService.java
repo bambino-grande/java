@@ -9,8 +9,11 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrderService {
-    InStockCarOrder createInStockCarOrder(UUID carID, UUID clientID, UUID managerID);
-    ComplectationCarOrder createComplectationCarOrder(UUID carID, UUID clientID, UUID managerID);
+    InStockCarOrder createInStockCarOrder(UUID carID, UUID clientID);
+    ComplectationCarOrder createComplectationCarOrder(UUID carID, UUID clientID);
+
+    InStockCarOrder createUsersInStockCarOrder(UUID carID);
+    ComplectationCarOrder createUsrsComplectationCarOrder(UUID carID);
 
     InStockCarOrder updateInStockCarOrder(InStockCarOrder inStockCarOrder);
     ComplectationCarOrder updateComplectationCarOrder(ComplectationCarOrder complectationCarOrder);
@@ -20,4 +23,13 @@ public interface OrderService {
 
     void deleteInStockCarOrder(UUID orderID);
     void deleteComplectationCarOrder(UUID orderID);
+
+    InStockCarOrder getInStockCarOrder(UUID orderID);
+    ComplectationCarOrder getComplectationCarOrder(UUID orderID);
+
+    InStockCarOrder cancelInStockCarOrder(UUID orderID);
+    ComplectationCarOrder cancelComplectationCarOrder(UUID orderID);
+
+    InStockCarOrder moveInStockCarOrder(UUID orderID);
+    ComplectationCarOrder moveComplectationCarOrder(UUID orderID);
 }

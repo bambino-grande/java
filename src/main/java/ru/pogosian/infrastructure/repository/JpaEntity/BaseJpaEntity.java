@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
 @Getter
 @Setter
 public abstract class BaseJpaEntity {

@@ -6,7 +6,7 @@ public class SystemAdmin extends User{
     SystemAdmin(String name) {
         super(name);
     }
-    public SystemAdmin(UUID id, String name) {
-        super(id, name);
+    public SystemAdmin(UUID id, String name, UUID keycloakId) {
+        super(id, name, keycloakId);
     }
 }

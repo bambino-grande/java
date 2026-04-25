@@ -11,5 +11,48 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.2
+    container_name: keycloak
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - --import-realm
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - ./src/main/resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+  spring-keycloak-app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: spring-keycloak-app
+    depends_on:
+      - postgres
+      - keycloak
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bambino_grande
+      SPRING_DATASOURCE_USERNAME: bambino_grande
+      SPRING_DATASOURCE_PASSWORD: password
+
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8080/realms/bambino-grande
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/bambino-grande/protocol/openid-connect/certs
+      JWT_AUTH_CONVERTER_RESOURCE_ID: bambino-grande-rest-api
+      JWT_AUTH_CONVERTER_PRINCIPAL_ATTRIBUTE: sub
+    ports:
+      - "8081:8080"
+    restart: always
+    networks:
+      - app-network
 volumes:
   postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

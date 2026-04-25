@@ -45,4 +45,9 @@ public class JpaComplectationCarOrderRepositoryAdapter implements ComplectationC
         ComplectationCarOrderJpaEntity.setRemoved(true);
         jpaComplectationCarOrderRepository.save(ComplectationCarOrderJpaEntity);
     }
+
+    @Override
+    public List<ComplectationCarOrder> findAllByClientId(UUID clientId, Pageable pageable) {
+        return jpaComplectationCarOrderRepository.findAllByClientId(clientId, pageable).getContent().stream().map(mapper::toDomain).toList();
+    }
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaInStockCarOrderRepository extends JpaRepository<InStockCarOrderJpaEntity, UUID> {
+    Page<InStockCarOrderJpaEntity> findAllByClientId(UUID clientId, Pageable pageable);
 }

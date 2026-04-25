@@ -335,20 +335,21 @@ public class Mapper {
 
     /*--------------------------TestDriveRequest--------------------------*/
     public User toDomain(UserJpaEntity userJpaEntity) {
-        if(userJpaEntity.getType() == UserType.Client)
-            return new Client(userJpaEntity.getId(), userJpaEntity.getName());
-        if(userJpaEntity.getType() == UserType.Manager)
-            return new Manager(userJpaEntity.getId(), userJpaEntity.getName());
-        if(userJpaEntity.getType() == UserType.SystemAdmin)
-            return new SystemAdmin(userJpaEntity.getId(), userJpaEntity.getName());
-        if(userJpaEntity.getType() == UserType.WarehouseAdmin)
-            return new WarehouseAdmin(userJpaEntity.getId(), userJpaEntity.getName());
+        if(userJpaEntity.getType() == UserType.USER)
+            return new Client(userJpaEntity.getId(), userJpaEntity.getName(), userJpaEntity.getKeycloakId());
+        if(userJpaEntity.getType() == UserType.MANAGER)
+            return new Manager(userJpaEntity.getId(), userJpaEntity.getKeycloakId(), userJpaEntity.getName());
+        if(userJpaEntity.getType() == UserType.ADMIN)
+            return new SystemAdmin(userJpaEntity.getId(), userJpaEntity.getName(),userJpaEntity.getKeycloakId());
+        if(userJpaEntity.getType() == UserType.WAREHOUSE_ADMIN)
+            return new WarehouseAdmin(userJpaEntity.getId(), userJpaEntity.getName(), userJpaEntity.getKeycloakId());
         return null;
     }
 
     public UserJpaEntity toJpaEntity(User user) {
         return new UserJpaEntity(
             user.getId(),
+            user.getKeycloakId(),
             user.getName(),
             getUserType(user)
         );
@@ -356,13 +357,13 @@ public class Mapper {
 
     private UserType getUserType(User user){
         if(user instanceof Client)
-            return UserType.Client;
+            return UserType.USER;
         if(user instanceof Manager)
-            return UserType.Manager;
+            return UserType.MANAGER;
         if(user instanceof SystemAdmin)
-            return UserType.SystemAdmin;
+            return UserType.ADMIN;
         if(user instanceof WarehouseAdmin)
-            return UserType.WarehouseAdmin;
+            return UserType.WAREHOUSE_ADMIN;
         return null;
     }
 }

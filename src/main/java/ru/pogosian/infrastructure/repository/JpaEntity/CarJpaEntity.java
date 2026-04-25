@@ -16,6 +16,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "cars")
 @SQLRestriction("removed = false")
+@NoArgsConstructor
 public class CarJpaEntity extends BaseJpaEntity{
     @Column(unique = true,  nullable = false)
     private String carName;

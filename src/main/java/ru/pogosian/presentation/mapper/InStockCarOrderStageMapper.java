@@ -17,10 +17,6 @@ public interface InStockCarOrderStageMapper {
     @Mapping(target = "stage", source = "state", qualifiedByName = "toDtoStage")
     InStockCarOrderResponse toDto(InStockCarOrder inStockCarOrder);
 
-    @Mapping(target = "orderId", ignore = true)
-    @Mapping(target = "state", ignore = true)
-    InStockCarOrder toDomain(CreateInStockCarOrderRequest request);
-
     @Mapping(target = "orderId", source = "orderId")
     @Mapping(target = "state", source = "request.stage", qualifiedByName = "toDomainStage")
     InStockCarOrder toDomain(UpdateInStockCarOrderRequest request, UUID orderId);

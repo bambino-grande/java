@@ -16,6 +16,7 @@ import java.util.UUID;
 @Getter
 @Entity
 @Setter
+@NoArgsConstructor
 @Table(name = "car_configuration")
 public class CarConfigurationJpaEntity extends BaseJpaEntity{
     @Column(name = "configuration_model_id", nullable = false)

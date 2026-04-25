@@ -11,4 +11,5 @@ public interface TestDriveRequestRepository {
     TestDriveRequest findById(UUID id);
     List<TestDriveRequest> findAll(Pageable pageable);
     void deleteById(UUID id);
+    List<TestDriveRequest> findAllByClientId(UUID clientId, Pageable pageable);
 }

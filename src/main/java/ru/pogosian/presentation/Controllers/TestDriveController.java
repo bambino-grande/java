@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.pogosian.business.services.TestDriveService;
 import ru.pogosian.presentation.DTO.request.CreateOrUpdateTestDriveRequestRequest;
@@ -29,6 +30,7 @@ public class TestDriveController {
     private final TestDriveService testDriveService;
 
     @GetMapping("/find-all")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
     @Operation(summary = "получить список заявок", description = "возвращает список заявок на тестдрайв")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "список заявок", content = @Content(array = @ArraySchema(schema = @Schema(implementation = TestDriveRequestResponse.class)))),
@@ -41,6 +43,7 @@ public class TestDriveController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Operation(summary = "создать заявку", description = "создаёт новую заявку на тест-драйв.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "созданная заявка", content = @Content(schema = @Schema(implementation = TestDriveRequestResponse.class))),
@@ -53,6 +56,7 @@ public class TestDriveController {
     }
 
     @PutMapping("/make-available/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @Operation(summary = "сделать автомобиль доступным для тест-драйва")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "автомобиль теперь доступен для тест-драйва"),
@@ -65,6 +69,7 @@ public class TestDriveController {
     }
 
     @PutMapping("/unmake-available/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @Operation(summary = "снять доступность автомобиля для тест-драйва")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "автомобиль больше недоступен для тест-драйва"),

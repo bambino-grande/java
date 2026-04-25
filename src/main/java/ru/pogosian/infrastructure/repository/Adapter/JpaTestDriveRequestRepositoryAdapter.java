@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.pogosian.business.excrptions.DomainValidationException;
+import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.repositories.TestDriveRequestRepository;
 import ru.pogosian.business.testDrive.TestDriveRequest;
 import ru.pogosian.infrastructure.repository.JpaEntity.InStockCarOrder.InStockCarOrderJpaEntity;
@@ -41,5 +42,9 @@ public class JpaTestDriveRequestRepositoryAdapter implements TestDriveRequestRep
         TestDriveRequestJpaEntity TestDriveRequestJpaEntity = JpaTestDriveRequestRepository.findById(id).orElseThrow(() -> new DomainValidationException("TestDriveRequest with id " + id + " does not exist"));
         TestDriveRequestJpaEntity.setRemoved(true);
         JpaTestDriveRequestRepository.save(TestDriveRequestJpaEntity);
+    }
+    @Override
+    public List<TestDriveRequest> findAllByClientId(UUID clientId, Pageable pageable) {
+        return JpaTestDriveRequestRepository.findAllByClientId(clientId, pageable).getContent().stream().map(mapper::toDomain).toList();
     }
 }

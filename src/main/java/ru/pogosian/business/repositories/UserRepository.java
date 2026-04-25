@@ -10,4 +10,6 @@ public interface UserRepository {
     User findById(UUID id);
     List<User> findAll();
     void deleteById(UUID id);
+    User findByKeycloakId(UUID keycloakId);
+    List<User> findAllManagers();
 }

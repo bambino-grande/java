@@ -8,12 +8,14 @@ import org.jetbrains.annotations.NotNull;
 public abstract class User {
     private final UUID id;
     private final String name;
+    private final UUID keycloakId;
 
-    protected User (@NotNull UUID id, @NotNull String name) {
+    protected User (@NotNull UUID id, @NotNull String name, UUID keycloakId) {
         if(name.isBlank())
             throw new IllegalArgumentException();
         this.name = name;
         this.id = id;
+        this.keycloakId = keycloakId;
     }
 
     protected User(@NotNull String name) {
@@ -21,5 +23,6 @@ public abstract class User {
             throw new IllegalArgumentException();
         this.name = name;
         this.id = UUID.randomUUID();
+        this.keycloakId = null;
     }
 }

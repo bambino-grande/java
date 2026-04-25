@@ -9,6 +9,10 @@ import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.repositories.CarRepository;
 import ru.pogosian.business.repositories.TestDriveRequestRepository;
 import ru.pogosian.business.testDrive.TestDriveRequest;
+import ru.pogosian.business.users.Manager;
+import ru.pogosian.business.users.SystemAdmin;
+import ru.pogosian.business.users.User;
+import ru.pogosian.security.SecurityService;
 
 import java.util.UUID;
 import java.time.LocalDateTime;
@@ -19,6 +23,7 @@ import java.util.List;
 public class testDriveServiceImpl implements TestDriveService {
     private final CarRepository usingCarRepository;
     private final TestDriveRequestRepository usingTestDriveRequestRepository;
+    private final SecurityService securityService;
 
     @Transactional
     @Override
@@ -43,7 +48,11 @@ public class testDriveServiceImpl implements TestDriveService {
     }
     @Override
     public List<TestDriveRequest> listTestDriveRequests(Pageable pageable) {
-        return usingTestDriveRequestRepository.findAll(pageable);
+        User currnetUser = securityService.getCurrentUser();
+        if(currnetUser instanceof Manager || currnetUser instanceof SystemAdmin)
+            return  usingTestDriveRequestRepository.findAll(pageable);
+        else
+            return usingTestDriveRequestRepository.findAllByClientId(currnetUser.getId(), pageable);
     }
 
     @Transactional

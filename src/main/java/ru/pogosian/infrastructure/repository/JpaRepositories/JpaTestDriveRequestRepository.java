@@ -11,4 +11,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface JpaTestDriveRequestRepository extends JpaRepository<TestDriveRequestJpaEntity, UUID> {
+    Page<TestDriveRequestJpaEntity> findAllByClientId(UUID clientId, Pageable pageable);
 }

@@ -11,4 +11,5 @@ public interface InStockCarOrderRepository {
     InStockCarOrder findById(UUID id);
     List<InStockCarOrder> findAll(Pageable pageable);
     void deleteById(UUID id);
+    List<InStockCarOrder> findAllByClientId(UUID clientId, Pageable pageable);
 }

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.pogosian.business.filters.Filter;
 import ru.pogosian.business.services.CarService;
@@ -32,6 +33,7 @@ public class CarController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "получить автомобиль", description = "возвращает автомобиль по идентификатору.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "автомобиль", content = @Content(schema = @Schema(implementation = CarResponse.class))),
@@ -45,6 +47,7 @@ public class CarController {
 
 
     @PostMapping("/search")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "получить список автомобилей", description = "возвращает автомобили в наличии с фильтрацией по параметрам поиска.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "список автомобилей", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CarResponse.class)))),
@@ -59,6 +62,7 @@ public class CarController {
 
 
     @PostMapping("/create-from-model")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
     @Operation(summary = "создать автомобиль из модели", description = "создаёт автомобиль с базовой конфигурацией на основе модели.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "созданный автомобиль", content = @Content(schema = @Schema(implementation = CarResponse.class))),
@@ -72,6 +76,7 @@ public class CarController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
     @Operation(summary = "создать автомобиль", description = "создаёт автомобиль для указанной комплектации.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "созданный автомобиль", content = @Content(schema = @Schema(implementation = CarResponse.class))),
@@ -85,6 +90,7 @@ public class CarController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
     @Operation(summary = "обновить автомобиль", description = "обновляет данные автомобиля.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "обновлённый автомобиль", content = @Content(schema = @Schema(implementation = CarResponse.class))),
@@ -98,6 +104,7 @@ public class CarController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
     @Operation(summary = "удалить автомобиль", description = "выполняет мягкое удаление автомобиля.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "автомобиль удалён"),

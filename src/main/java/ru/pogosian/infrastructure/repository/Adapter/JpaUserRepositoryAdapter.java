@@ -7,6 +7,7 @@ import ru.pogosian.business.repositories.UserRepository;
 import ru.pogosian.business.users.User;
 import ru.pogosian.infrastructure.repository.JpaEntity.TestDriveRequestJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.User.UserJpaEntity;
+import ru.pogosian.infrastructure.repository.JpaEntity.User.UserType;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaUserRepository;
 import ru.pogosian.infrastructure.repository.Mapper.Mapper;
 
@@ -41,5 +42,15 @@ public class JpaUserRepositoryAdapter implements UserRepository {
         UserJpaEntity UserJpaEntity = JpaUserRepository.findById(id).orElseThrow(() -> new DomainValidationException("User with id " + id + " does not exist"));
         UserJpaEntity.setRemoved(true);
         JpaUserRepository.save(UserJpaEntity);
+    }
+
+    @Override
+    public User findByKeycloakId(UUID keycloakId) {
+        return mapper.toDomain(JpaUserRepository.findByKeycloakId(keycloakId).orElseThrow(() -> new DomainValidationException("User with keycloak " + keycloakId + " does not exist")));
+    }
+
+    @Override
+    public List<User> findAllManagers() {
+        return JpaUserRepository.findAllByType(UserType.MANAGER).stream().map(mapper::toDomain).toList();
     }
 }

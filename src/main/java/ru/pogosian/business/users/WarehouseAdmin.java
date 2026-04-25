@@ -7,7 +7,7 @@ public class WarehouseAdmin extends User{
         super(name);
     }
 
-    public WarehouseAdmin(UUID id, String name) {
-        super(id, name);
+    public WarehouseAdmin(UUID id, String name, UUID keycloakId) {
+        super(id, name, keycloakId);
     }
 }

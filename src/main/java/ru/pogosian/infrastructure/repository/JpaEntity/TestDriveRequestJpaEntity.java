@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "test_drive_request")
 @SQLRestriction("removed = false")
+@NoArgsConstructor
 public class TestDriveRequestJpaEntity extends BaseJpaEntity {
     @Column(nullable = false)
     private boolean isCarCapableForTestDrive;

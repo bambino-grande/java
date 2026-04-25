@@ -18,12 +18,16 @@ public class UserJpaEntity extends BaseJpaEntity {
     @Column
     private String name;
 
+    @Column(unique = true)
+    private UUID keycloakId;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserType type;
 
-    public UserJpaEntity(UUID id, String name, UserType userType) {
+    public UserJpaEntity(UUID id, UUID keycloakId, String name, UserType userType) {
         super(id);
+        this.keycloakId = keycloakId;
         this.name = name;
         this.type = userType;
     }

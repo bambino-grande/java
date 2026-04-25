@@ -6,7 +6,7 @@ public class Manager extends User{
     Manager(String name) {
         super(name);
     }
-    public Manager(UUID id, String name) {
-        super(id, name);
+    public Manager(UUID id, UUID keycloakId, String name) {
+        super(id, name, keycloakId);
     }
 }

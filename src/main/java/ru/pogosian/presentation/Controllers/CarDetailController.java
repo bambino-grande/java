@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.pogosian.business.services.DetailService;
 import ru.pogosian.presentation.DTO.request.CreateOrUpdateCarDetailRequest;
@@ -27,8 +28,8 @@ public class CarDetailController {
     private final CarDetailMapper carDetailMapper;
     private final DetailService detailService;
 
-
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "получить деталь", description = "возвращает деталь по идентификатору.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
@@ -42,6 +43,7 @@ public class CarDetailController {
 
 
     @GetMapping("/find-all")
+    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "получить список комплектующих", description = "возвращает все комплектующие.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "список комплектующих", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CarDetailResponse.class)))),
@@ -54,6 +56,7 @@ public class CarDetailController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "создать деталь", description = "создаёт новую деталь.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
@@ -66,6 +69,7 @@ public class CarDetailController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "обновить деталь", description = "обновляет деталь по идентификатору.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "обновлённая деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
@@ -78,6 +82,7 @@ public class CarDetailController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'WAREHOUSE_ADMIN')")
     @Operation(summary = "удалить деталь", description = "выполняет мягкое удаление детали.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "деталь удалена"),

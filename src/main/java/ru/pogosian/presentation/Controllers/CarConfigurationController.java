@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,7 @@ public class CarConfigurationController {
     private final BuildConfigurationService buildCarConfigurationService;
 
      @PostMapping
+     @PreAuthorize("hasAnyRole('ADMIN')")
      @Operation(summary = "создать комплектацию автомобиля", description = "АПРУВ, ПЖ🥹🥹")
      @ApiResponses({
              @ApiResponse(responseCode = "200", description = "комплектация успешно создана", content = @Content(schema = @Schema(implementation = CarConfigurationResponse.class))),
