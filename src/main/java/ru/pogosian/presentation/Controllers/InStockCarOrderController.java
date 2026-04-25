@@ -38,7 +38,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "список заказов", content = @Content(array = @ArraySchema(schema = @Schema(implementation = InStockCarOrderResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public List<InStockCarOrderResponse> findAllInStockCarOrders(Pageable pageable) {
         return orderService.viewAllInStockCarOrders(pageable).stream().map(inStockCarOrderMapper::toDto).collect(Collectors.toList());
@@ -51,7 +53,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "созданный заказ", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse createInStockCarOrder(@RequestBody CreateInStockCarOrderRequest createInStockCarOrderRequest) {
         return inStockCarOrderMapper.toDto(orderService.createInStockCarOrder(createInStockCarOrderRequest.carId(), createInStockCarOrderRequest.clientId()));
@@ -64,7 +68,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "созданный заказ", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse createUsersInStockCarOrder(@RequestBody CreateInStockCarOrderForUserRequest createInStockCarOrderRequest) {
         return inStockCarOrderMapper.toDto(orderService.createUsersInStockCarOrder(createInStockCarOrderRequest.carId()));
@@ -77,7 +83,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "обновлённый заказ", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse updateInStockCarOrder(@RequestBody UpdateInStockCarOrderRequest createOrUpdateCarDetailRequest, @PathVariable UUID id) {
         return inStockCarOrderMapper.toDto(orderService.updateInStockCarOrder(inStockCarOrderMapper.toDomain(createOrUpdateCarDetailRequest, id)));
@@ -90,7 +98,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ удалён"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public void deleteInStockCarOrder(@PathVariable UUID id) {
         orderService.deleteInStockCarOrder(id);
@@ -103,7 +113,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "удаленный хаках", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse moveInStockCarOrder(@PathVariable UUID id) {
         return inStockCarOrderMapper.toDto(orderService.moveInStockCarOrder(id));
@@ -116,7 +128,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ отменен", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse cancelInStockCarOrder(@PathVariable UUID id) {
         return inStockCarOrderMapper.toDto(orderService.cancelInStockCarOrder(id));
@@ -129,7 +143,9 @@ public class InStockCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ получен", content = @Content(schema = @Schema(implementation = InStockCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public InStockCarOrderResponse getInStockCarOrder(@PathVariable UUID id) {
         return inStockCarOrderMapper.toDto(orderService.getInStockCarOrder(id));

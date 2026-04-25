@@ -41,7 +41,9 @@ public class CarConfigurationController {
              @ApiResponse(responseCode = "200", description = "комплектация успешно создана", content = @Content(schema = @Schema(implementation = CarConfigurationResponse.class))),
              @ApiResponse(responseCode = "400", description = "Некорректные данные"),
              @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+             @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
      })
      public CarConfigurationResponse buildConfiguration(@RequestBody CreateOrUpdateCarConfigurationRequest createOrUpdateCarConfigurationRequest) {
          CarConfiguration configuration = carConfigurationMapper.toDomain(createOrUpdateCarConfigurationRequest);

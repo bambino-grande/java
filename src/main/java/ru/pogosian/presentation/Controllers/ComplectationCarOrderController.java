@@ -42,7 +42,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "список заказов", content = @Content(array = @ArraySchema(schema = @Schema(implementation = ComplectationCarOrderResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public List<ComplectationCarOrderResponse> findAllComplectationCarOrders(Pageable pageable) {
         return orderService.viewAllComplectationCarOrders(pageable).stream().map(complectationCarOrderMapper::toDto).collect(Collectors.toList());
@@ -55,7 +57,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "созданный заказ", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse createComplectationCarOrder(@RequestBody CreateComplectationCarOrderRequest createComplectationCarOrderRequest) {
         return complectationCarOrderMapper.toDto(orderService.createComplectationCarOrder(createComplectationCarOrderRequest.carId(), createComplectationCarOrderRequest.clientId()));
@@ -68,7 +72,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "созданный заказ", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse createUsrsComplectationCarOrder(@RequestBody CreateComplectationCarOrderForUserRequest createComplectationCarOrderForUserRequest) {
         return complectationCarOrderMapper.toDto(orderService.createUsrsComplectationCarOrder(createComplectationCarOrderForUserRequest.carId()));
@@ -80,7 +86,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "обновлённый заказ", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse updateComplectationCarOrder(@RequestBody UpdateComplectationCarOrderRequest createOrUpdateCarDetailRequest, @PathVariable UUID id) {
         return complectationCarOrderMapper.toDto(orderService.updateComplectationCarOrder(complectationCarOrderMapper.toDomain(createOrUpdateCarDetailRequest, id)));
@@ -92,7 +100,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ удалён"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public void deleteComplectationCarOrder(@PathVariable UUID id) {
         orderService.deleteComplectationCarOrder(id);
@@ -106,7 +116,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "удаленный хаках", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse moveComplectationCarOrder(@PathVariable UUID id) {
         return complectationCarOrderMapper.toDto(orderService.moveComplectationCarOrder(id));
@@ -119,7 +131,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ отменен", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Данные не найдены"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse cancelComplectationCarOrder(@PathVariable UUID id) {
         return complectationCarOrderMapper.toDto(orderService.cancelComplectationCarOrder(id));
@@ -132,7 +146,9 @@ public class ComplectationCarOrderController {
             @ApiResponse(responseCode = "200", description = "заказ получен", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public ComplectationCarOrderResponse getComplectationCarOrder(@PathVariable UUID id) {
         return complectationCarOrderMapper.toDto(orderService.getComplectationCarOrder(id));

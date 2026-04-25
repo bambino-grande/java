@@ -35,7 +35,9 @@ public class CarDetailController {
             @ApiResponse(responseCode = "200", description = "деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public CarDetailResponse getDetail(@PathVariable UUID id) {
         return carDetailMapper.toDto(detailService.viewCarDetails(id));
@@ -49,7 +51,9 @@ public class CarDetailController {
             @ApiResponse(responseCode = "200", description = "список комплектующих", content = @Content(array = @ArraySchema(schema = @Schema(implementation = CarDetailResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public List<CarDetailResponse> findAllDetails(Pageable pageable) {
         return detailService.viewAllCars(pageable).stream().map(carDetailMapper::toDto).collect(Collectors.toList());
@@ -62,7 +66,9 @@ public class CarDetailController {
             @ApiResponse(responseCode = "200", description = "деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public CarDetailResponse createCarDetail(@RequestBody CreateOrUpdateCarDetailRequest createOrUpdateCarDetailRequest) {
         return carDetailMapper.toDto(detailService.addCarDetails(carDetailMapper.toDomain(createOrUpdateCarDetailRequest)));
@@ -75,7 +81,9 @@ public class CarDetailController {
             @ApiResponse(responseCode = "200", description = "обновлённая деталь", content = @Content(schema = @Schema(implementation = CarDetailResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public CarDetailResponse updateCarDetail(@PathVariable UUID id, @RequestBody CreateOrUpdateCarDetailRequest createOrUpdateCarDetailRequest) {
         return carDetailMapper.toDto(detailService.updateCarDetails(carDetailMapper.toDomain(createOrUpdateCarDetailRequest, id)));
@@ -88,7 +96,9 @@ public class CarDetailController {
             @ApiResponse(responseCode = "200", description = "деталь удалена"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public void deleteCarDetail(@PathVariable UUID id) {
         detailService.deleteCar(id);

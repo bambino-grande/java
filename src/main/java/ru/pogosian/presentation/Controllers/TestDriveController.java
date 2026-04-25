@@ -36,7 +36,9 @@ public class TestDriveController {
             @ApiResponse(responseCode = "200", description = "список заявок", content = @Content(array = @ArraySchema(schema = @Schema(implementation = TestDriveRequestResponse.class)))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public List<TestDriveRequestResponse> findAllTestDriveRequests(Pageable pageable) {
         return testDriveService.listTestDriveRequests(pageable).stream().map(testDriveRequestMapper::toDto).collect(Collectors.toList());
@@ -49,7 +51,9 @@ public class TestDriveController {
             @ApiResponse(responseCode = "200", description = "созданная заявка", content = @Content(schema = @Schema(implementation = TestDriveRequestResponse.class))),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public TestDriveRequestResponse createTestDriveRequest(@RequestBody CreateOrUpdateTestDriveRequestRequest createOrUpdateTestDriveRequestRequest) {
         return testDriveRequestMapper.toDto(testDriveService.createTestDriveRequest(createOrUpdateTestDriveRequestRequest.clientId(), createOrUpdateTestDriveRequestRequest.carId(),  createOrUpdateTestDriveRequestRequest.testDriveStartAt()));
@@ -62,7 +66,9 @@ public class TestDriveController {
             @ApiResponse(responseCode = "200", description = "автомобиль теперь доступен для тест-драйва"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public void makeCarAvailableForTestDrive(@PathVariable UUID id) {
         testDriveService.makeCarAvailableForTestDrive(id);
@@ -75,7 +81,9 @@ public class TestDriveController {
             @ApiResponse(responseCode = "200", description = "автомобиль больше недоступен для тест-драйва"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
             @ApiResponse(responseCode = "409", description = "Конфликт данных"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера"),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован"),
+            @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public void unMakeCarAvailableForTestDrive(@PathVariable UUID id) {
         testDriveService.unmakeCarAvailableForTestDrive(id);
