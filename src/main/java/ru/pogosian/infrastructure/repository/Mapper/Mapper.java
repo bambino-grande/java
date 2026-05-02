@@ -29,6 +29,7 @@ import ru.pogosian.infrastructure.repository.JpaEntity.User.UserJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.User.UserType;
 
 import java.awt.*;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
@@ -121,12 +122,19 @@ public class Mapper {
 
     public CarConfigurationJpaEntity toJpaEntity(CarConfiguration carConfiguration) {
         return new CarConfigurationJpaEntity(
-            carConfiguration.getConfigurationId(),
-            carConfiguration.getConfigurationModelId(),
-            carConfiguration.getTotalPrice(),
-            carConfiguration.getUsedDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet())
+                carConfiguration.getConfigurationId(),
+                carConfiguration.getConfigurationModelId(),
+                carConfiguration.getTotalPrice(),
+                carConfiguration.getUsedDetails().stream().map(this::toJpaEntity).collect(Collectors.toSet())
         );
-
+    }
+    public CarConfigurationJpaEntity toJpaEntity(CarConfiguration carConfiguration, Set<CarDetailJpaEntity> usedDetails) {
+        return new CarConfigurationJpaEntity(
+                carConfiguration.getConfigurationId(),
+                carConfiguration.getConfigurationModelId(),
+                carConfiguration.getTotalPrice(),
+                usedDetails
+        );
     }
 
     /*--------------------------CarModel--------------------------*/

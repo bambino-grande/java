@@ -52,17 +52,20 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
+    testImplementation 'org.testcontainers:junit-jupiter:1.21.4'
+    testImplementation 'org.testcontainers:testcontainers:1.21.4'
+    testImplementation 'org.testcontainers:postgresql:1.21.4'
     testImplementation 'org.springframework.boot:spring-boot-testcontainers'
     testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     integrationTestImplementation 'org.springframework.boot:spring-boot-starter-test'
     integrationTestImplementation 'org.springframework.security:spring-security-test'
-    integrationTestImplementation 'org.testcontainers:junit-jupiter'
-    integrationTestImplementation 'org.testcontainers:postgresql'
+    integrationTestImplementation 'org.testcontainers:junit-jupiter:1.21.4'
+    integrationTestImplementation 'org.testcontainers:testcontainers:1.21.4'
+    integrationTestImplementation 'org.testcontainers:postgresql:1.21.4'
     integrationTestImplementation 'org.springframework.boot:spring-boot-testcontainers'
     integrationTestAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
@@ -81,6 +84,7 @@ tasks.register('integrationTest', Test) {
     classpath = sourceSets.integrationTest.runtimeClasspath
     useJUnitPlatform()
     shouldRunAfter test
+    systemProperty 'api.version', '1.44'
     testLogging {
         events 'passed', 'skipped', 'failed'
     }

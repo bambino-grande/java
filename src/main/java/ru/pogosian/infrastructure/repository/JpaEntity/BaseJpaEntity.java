@@ -16,7 +16,6 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @Getter
-@Setter
 public abstract class BaseJpaEntity {
     @Id
     private UUID id;
@@ -29,6 +28,7 @@ public abstract class BaseJpaEntity {
     @Column(nullable = false)
     private Instant updatedAt;
 
+    @Setter
     @Column(nullable = false)
     private boolean removed;
 

@@ -14,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @SQLRestriction("removed = false")
+@NoArgsConstructor
 public class UserJpaEntity extends BaseJpaEntity {
     @Column
     private String name;

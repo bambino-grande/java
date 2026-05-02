@@ -29,7 +29,7 @@ public class SecurityService {
         }
     }
 
-    private boolean hasRole(String role) {
+    static boolean hasRole(String role) {
         JwtAuthenticationToken jwtAuthenticationToken = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         return  jwtAuthenticationToken.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(role));
     }

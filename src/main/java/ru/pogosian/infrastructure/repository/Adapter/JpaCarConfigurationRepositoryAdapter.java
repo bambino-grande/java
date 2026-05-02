@@ -39,8 +39,7 @@ public class JpaCarConfigurationRepositoryAdapter implements CarConfigurationRep
         carConfiguration.getUsedDetails().forEach(carDetail -> {
             usedDetails.add(carDetailRepository.findById(carDetail.getId()).orElseThrow(() -> new DomainValidationException("Car detail with id " + carDetail.getId() + " does not exist")));
         });
-        CarConfigurationJpaEntity entity = mapper.toJpaEntity(carConfiguration);
-        entity.setUsedDetails(usedDetails);
+        CarConfigurationJpaEntity entity = mapper.toJpaEntity(carConfiguration, usedDetails);
         carConfigurationRepository.save(entity);
     }
 
