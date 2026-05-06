@@ -2,22 +2,16 @@ package ru.pogosian.business.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.pogosian.business.excrptions.DomainValidationException;
-import ru.pogosian.business.orders.complectationCarOrder.CompectationCarOrderStatusState;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrderCancelled;
-import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrderPlaced;
 import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrder;
 import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrderCancelled;
-import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrderStatusState;
-import ru.pogosian.business.repositories.CarRepository;
 import ru.pogosian.business.repositories.ComplectationCarOrderRepository;
 import ru.pogosian.business.repositories.InStockCarOrderRepository;
 import ru.pogosian.business.repositories.UserRepository;
-import ru.pogosian.business.users.Client;
 import ru.pogosian.business.users.Manager;
 import ru.pogosian.business.users.SystemAdmin;
 import ru.pogosian.business.users.User;
@@ -135,68 +129,48 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public InStockCarOrder getInStockCarOrder(UUID orderID) {
-        User currnetUser = securityService.getCurrentUser();
-        if(orderSecurityService.isInStockCarOrderOwner(orderID, SecurityContextHolder.getContext().getAuthentication()) || currnetUser instanceof Manager || currnetUser instanceof SystemAdmin)
-            return inStockCarOrderRepository.findById(orderID);
-        throw new IllegalArgumentException("You are not allowed to perform this operation");
+        return inStockCarOrderRepository.findById(orderID);
     }
 
     @Override
     public ComplectationCarOrder getComplectationCarOrder(UUID orderID) {
-        User currnetUser = securityService.getCurrentUser();
-        if(currnetUser instanceof Manager || currnetUser instanceof SystemAdmin || orderSecurityService.isComplectationCarOrderOwner(orderID, SecurityContextHolder.getContext().getAuthentication()))
-            return complectationCarOrderRepository.findById(orderID);
-        throw new IllegalArgumentException("You are not allowed to perform this operation");
+        return complectationCarOrderRepository.findById(orderID);
     }
 
     @Transactional
     @Override
     public InStockCarOrder cancelInStockCarOrder(UUID orderID) {
-        User currnetUser = securityService.getCurrentUser();
-        if(currnetUser instanceof SystemAdmin || orderSecurityService.isInStockCarOrderOwner(orderID, SecurityContextHolder.getContext().getAuthentication())) {
-            InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderID);
-            inStockCarOrder.setState(new InStockCarOrderCancelled());
-            inStockCarOrderRepository.save(inStockCarOrder);
-            return inStockCarOrder;
-        }
-        throw new IllegalArgumentException("You are not allowed to cancel this order");
+        InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderID);
+        inStockCarOrder.setState(new InStockCarOrderCancelled());
+        inStockCarOrderRepository.save(inStockCarOrder);
+        return inStockCarOrder;
     }
 
     @Transactional
     @Override
     public ComplectationCarOrder cancelComplectationCarOrder(UUID orderID) {
-        User currnetUser = securityService.getCurrentUser();
-        if(currnetUser instanceof SystemAdmin || orderSecurityService.isComplectationCarOrderOwner(orderID, SecurityContextHolder.getContext().getAuthentication())) {
-            ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderID);
-            complectationCarOrder.setState(new ComplectationCarOrderCancelled());
-            complectationCarOrderRepository.save(complectationCarOrder);
-            return complectationCarOrder;
-        }
-        throw new IllegalArgumentException("You are not allowed to cancel this order");
+        ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderID);
+        complectationCarOrder.setState(new ComplectationCarOrderCancelled());
+        complectationCarOrderRepository.save(complectationCarOrder);
+        return complectationCarOrder;
     }
 
     @Transactional
     @Override
     public InStockCarOrder moveInStockCarOrder(UUID orderID) {
-        if(orderSecurityService.canMoveInStockCarOrder(orderID, SecurityContextHolder.getContext().getAuthentication())) {
-            InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderID);
-            inStockCarOrder.nextState();
-            inStockCarOrderRepository.save(inStockCarOrder);
-            return inStockCarOrder;
-        }
-        throw new IllegalArgumentException("You are not allowed to move in stock car order");
+        InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderID);
+        inStockCarOrder.nextState();
+        inStockCarOrderRepository.save(inStockCarOrder);
+        return inStockCarOrder;
     }
 
     @Transactional
     @Override
     public ComplectationCarOrder moveComplectationCarOrder(UUID orderID) {
-        if(orderSecurityService.canMoveComplectationCarOrder(orderID, SecurityContextHolder.getContext().getAuthentication())) {
-            ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderID);
-            complectationCarOrder.nextState();
-            complectationCarOrderRepository.save(complectationCarOrder);
-            return complectationCarOrder;
-        }
-        throw new IllegalArgumentException("You are not allowed to move this that order");
+        ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderID);
+        complectationCarOrder.nextState();
+        complectationCarOrderRepository.save(complectationCarOrder);
+        return complectationCarOrder;
     }
 
     private UUID findManagerId() {

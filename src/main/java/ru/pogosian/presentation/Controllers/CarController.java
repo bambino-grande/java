@@ -66,7 +66,7 @@ public class CarController {
 
 
     @PostMapping("/create-from-model")
-    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @Operation(summary = "создать автомобиль из модели", description = "создаёт автомобиль с базовой конфигурацией на основе модели.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "созданный автомобиль", content = @Content(schema = @Schema(implementation = CarResponse.class))),

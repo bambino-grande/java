@@ -8,7 +8,7 @@ import ru.pogosian.business.orders.inStockCarOrder.InStockCarOrder;
 import ru.pogosian.business.repositories.InStockCarOrderRepository;
 import ru.pogosian.infrastructure.repository.JpaEntity.InStockCarOrder.InStockCarOrderJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaInStockCarOrderRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.InStockCarOrderMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JpaInStockCarOrderRepositoryAdapter implements InStockCarOrderRepository {
     private JpaInStockCarOrderRepository JpaInStockCarOrderRepository;
-    private Mapper mapper;
+    private InStockCarOrderMapper mapper;
 
     @Override
     public void save(InStockCarOrder InStockCarOrder) {

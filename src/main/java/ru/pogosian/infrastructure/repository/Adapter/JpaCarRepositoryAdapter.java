@@ -7,13 +7,11 @@ import ru.pogosian.business.cars.Car;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.filters.Filter;
 import ru.pogosian.business.repositories.CarRepository;
-import ru.pogosian.infrastructure.repository.JpaEntity.CarDetail.CarDetailJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.CarJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaCarRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.CarMapper;
 import ru.pogosian.infrastructure.repository.Specification.CarJpaSpecifications;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JpaCarRepositoryAdapter implements CarRepository {
     private JpaCarRepository jpaCarRepository;
-    private Mapper mapper;
+    CarMapper mapper;
 
     @Override
     public void save(Car car) {

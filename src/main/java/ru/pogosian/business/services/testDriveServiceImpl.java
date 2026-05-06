@@ -59,7 +59,7 @@ public class testDriveServiceImpl implements TestDriveService {
     @Override
     public void makeCarAvailableForTestDrive(UUID carID) {
         Car car = usingCarRepository.findById(carID);
-        car.availableForTestDrive = true;
+        car.setAvailableForTestDrive(true);
         usingCarRepository.save(car);
     }
 
@@ -67,7 +67,7 @@ public class testDriveServiceImpl implements TestDriveService {
     @Override
     public void unmakeCarAvailableForTestDrive(UUID carID) {
         Car car = usingCarRepository.findById(carID);
-        car.availableForTestDrive = false;
+        car.setAvailableForTestDrive(false);
         usingCarRepository.save(car);
     }
 }

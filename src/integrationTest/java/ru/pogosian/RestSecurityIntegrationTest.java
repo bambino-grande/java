@@ -6,6 +6,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class RestSecurityIntegrationTest extends BaseIntegrationTest {
@@ -38,4 +39,68 @@ public class RestSecurityIntegrationTest extends BaseIntegrationTest {
                         }
                         """)).andExpect(status().isForbidden());
     }
+
+    @Test
+    void userCannotMoveInStockOrder() throws Exception {
+        mockMvc.perform(post("/api/in-stock-car-order/70000000-0000-0000-0000-000000000001/move")
+        .with(userJwt("90000000-0000-0000-0000-000000000001", "USER")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void managerCanMoveInStockOrder() throws Exception {
+        mockMvc.perform(post("/api/in-stock-car-order/70000000-0000-0000-0000-000000000001/move")
+                        .with(userJwt("90000000-0000-0000-0000-000000000002", "MANAGER")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void userCannotUpdateInStockOrder() throws Exception {
+        mockMvc.perform(put("/api/in-stock-car-order/70000000-0000-0000-0000-000000000001")
+                        .with(userJwt("90000000-0000-0000-0000-000000000001", "USER"))
+                        .contentType("application/json")
+                        .content("""
+                                {
+                                    "carId": "40000000-0000-0000-0000-000000000001",
+                                    "clientId": "10000000-0000-0000-0000-000000000001",
+                                    "managerId": "10000000-0000-0000-0000-000000000002",
+                                    "inStockCarOrderStage": "Placed"
+                                }
+                                """))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    void userCannotMoveComplectationOrder() throws Exception {
+        mockMvc.perform(post("/api/complectation-car-order/80000000-0000-0000-0000-000000000001/move")
+                        .with(userJwt("90000000-0000-0000-0000-000000000001", "USER")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void managerCanMoveComplectationOrderFromManagerStage() throws Exception {
+        mockMvc.perform(post("/api/complectation-car-order/80000000-0000-0000-0000-000000000001/move")
+                        .with(userJwt("90000000-0000-0000-0000-000000000002", "MANAGER")))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void userCannotUpdateComplectationOrder() throws Exception {
+        mockMvc.perform(put("/api/complectation-car-order/80000000-0000-0000-0000-000000000001")
+                        .with(userJwt("90000000-0000-0000-0000-000000000001", "USER"))
+                        .contentType("application/json")
+                        .content("""
+                                {
+                                    "carId": "40000000-0000-0000-0000-000000000001",
+                                    "clientId": "10000000-0000-0000-0000-000000000001",
+                                    "managerId": "10000000-0000-0000-0000-000000000002",
+                                    "compectationCarOrderStatusState": "Placed"
+                                }
+                                """))
+                .andExpect(status().isForbidden());
+    }
+
+
+
 }

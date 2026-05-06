@@ -5,11 +5,10 @@ import org.springframework.stereotype.Repository;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.repositories.UserRepository;
 import ru.pogosian.business.users.User;
-import ru.pogosian.infrastructure.repository.JpaEntity.TestDriveRequestJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.User.UserJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.User.UserType;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaUserRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.UserMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JpaUserRepositoryAdapter implements UserRepository {
     private JpaUserRepository JpaUserRepository;
-    private Mapper mapper;
+    private UserMapper mapper;
 
     @Override
     public void save(User User) {

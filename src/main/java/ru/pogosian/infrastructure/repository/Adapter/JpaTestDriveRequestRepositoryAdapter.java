@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.pogosian.business.excrptions.DomainValidationException;
-import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.repositories.TestDriveRequestRepository;
 import ru.pogosian.business.testDrive.TestDriveRequest;
-import ru.pogosian.infrastructure.repository.JpaEntity.InStockCarOrder.InStockCarOrderJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.TestDriveRequestJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaTestDriveRequestRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.TestDriveRequestMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JpaTestDriveRequestRepositoryAdapter implements TestDriveRequestRepository {
     private JpaTestDriveRequestRepository JpaTestDriveRequestRepository;
-    private Mapper mapper;
+    private TestDriveRequestMapper mapper;
 
     @Override
     public void save(TestDriveRequest TestDriveRequest) {

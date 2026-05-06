@@ -3,15 +3,12 @@ package ru.pogosian.infrastructure.repository.Adapter;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import ru.pogosian.business.cars.Car;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
 import ru.pogosian.business.repositories.ComplectationCarOrderRepository;
-import ru.pogosian.infrastructure.repository.JpaEntity.CarDetail.CarDetailJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.ComplectationCarOrder.ComplectationCarOrderJpaEntity;
-import ru.pogosian.infrastructure.repository.JpaRepositories.JpaCarRepository;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaComplectationCarOrderRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.ComplectationCarOrderMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class JpaComplectationCarOrderRepositoryAdapter implements ComplectationCarOrderRepository {
     private JpaComplectationCarOrderRepository jpaComplectationCarOrderRepository;
-    private Mapper mapper;
+    private ComplectationCarOrderMapper mapper;
 
     @Override
     public void save(ComplectationCarOrder ComplectationCarOrder) {

@@ -3,13 +3,11 @@ package ru.pogosian.infrastructure.repository.Adapter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.pogosian.business.cars.CarModel;
-import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.repositories.CarModelRepository;
-import ru.pogosian.infrastructure.repository.JpaEntity.CarDetail.CarDetailJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaEntity.CarModelJpaEntity;
 import ru.pogosian.infrastructure.repository.JpaRepositories.JpaCarModelRepository;
-import ru.pogosian.infrastructure.repository.Mapper.Mapper;
+import ru.pogosian.infrastructure.repository.Mapper.CarModelMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +15,7 @@ import java.util.UUID;
 @Repository
 @AllArgsConstructor
 public class JpaCarModelRepositoryAdapter implements CarModelRepository {
-    Mapper mapper;
+    CarModelMapper mapper;
     private JpaCarModelRepository jpaCarModelRepository;
 
     @Override

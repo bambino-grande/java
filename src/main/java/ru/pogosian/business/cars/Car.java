@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -13,6 +14,7 @@ public class Car {
     private CarConfiguration configuration;
     private ColorTypes color;
     private BigDecimal price;
-    public Boolean availableForSale;
-    public Boolean availableForTestDrive;
+    private Boolean availableForSale;
+    @Setter
+    private Boolean availableForTestDrive;
 }

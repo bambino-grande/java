@@ -15,6 +15,7 @@ import ru.pogosian.business.services.TestDriveService;
 import ru.pogosian.presentation.DTO.request.CreateOrUpdateTestDriveRequestRequest;
 import ru.pogosian.presentation.DTO.response.TestDriveRequestResponse;
 import ru.pogosian.presentation.mapper.TestDriveRequestMapper;
+import ru.pogosian.security.SecurityService;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ import java.util.stream.Collectors;
 public class TestDriveController {
     private final TestDriveRequestMapper testDriveRequestMapper;
     private final TestDriveService testDriveService;
+    private final SecurityService securityService;
 
     @GetMapping("/find-all")
     @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
@@ -56,7 +58,7 @@ public class TestDriveController {
             @ApiResponse(responseCode = "403", description = "Недостаточно прав для выполнения операции")
     })
     public TestDriveRequestResponse createTestDriveRequest(@RequestBody CreateOrUpdateTestDriveRequestRequest createOrUpdateTestDriveRequestRequest) {
-        return testDriveRequestMapper.toDto(testDriveService.createTestDriveRequest(createOrUpdateTestDriveRequestRequest.clientId(), createOrUpdateTestDriveRequestRequest.carId(),  createOrUpdateTestDriveRequestRequest.testDriveStartAt()));
+        return testDriveRequestMapper.toDto(testDriveService.createTestDriveRequest(securityService.getCurrentUser().getId(), createOrUpdateTestDriveRequestRequest.carId(),  createOrUpdateTestDriveRequestRequest.testDriveStartAt()));
     }
 
     @PutMapping("/make-available/{id}")

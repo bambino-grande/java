@@ -65,4 +65,104 @@ VALUES
     ('30000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000003'),
     ('30000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000004');
 
+INSERT INTO car_configuration(id, configuration_model_id, total_price, created_at, updated_at, removed)
+VALUES
+    ('60000000-0000-0000-0000-000000000001',
+     '30000000-0000-0000-0000-000000000001',
+     120001200,
+     NOW(),
+     NOW(),
+     FALSE),
+
+    ('60000000-0000-0000-0000-000000000002',
+     '30000000-0000-0000-0000-000000000002',
+     120001200,
+     NOW(),
+     NOW(),
+     FALSE);
+
+INSERT INTO car_configuration_used_details(configuration_id, detail_id)
+VALUES
+    ('60000000-0000-0000-0000-000000000001', '20000000-0000-0000-0000-000000000001'),
+    ('60000000-0000-0000-0000-000000000002', '20000000-0000-0000-0000-000000000002');
+
+INSERT INTO cars(
+    id,
+    car_name,
+    configuration_id,
+    color,
+    price,
+    available_for_sale,
+    available_for_test_drive,
+    created_at,
+    updated_at,
+    removed
+)
+VALUES
+    ('40000000-0000-0000-0000-000000000001',
+     'JIGA1',
+     '60000000-0000-0000-0000-000000000001',
+     'WHITE',
+     120001200,
+     TRUE,
+     TRUE,
+     NOW(),
+     NOW(),
+     FALSE
+    ),
+    ('40000000-0000-0000-0000-000000000002',
+     'JIGA2',
+     '60000000-0000-0000-0000-000000000002',
+     'WHITE',
+     120001200,
+     TRUE,
+     TRUE,
+     NOW(),
+     NOW(),
+     FALSE
+    );
+
+INSERT INTO in_stock_car_orders(
+    id,
+    client_id,
+    manager_id,
+    car_id,
+    stage,
+    created_at,
+    updated_at,
+    removed
+)
+
+VALUES(
+       '70000000-0000-0000-0000-000000000001',
+       '10000000-0000-0000-0000-000000000001',
+       '10000000-0000-0000-0000-000000000002',
+       '40000000-0000-0000-0000-000000000001',
+       'Placed',
+       NOW(),
+       NOW(),
+       FALSE
+      );
+
+INSERT INTO complectation_car_orders(
+    id,
+    client_id,
+    manager_id,
+    car_id,
+    stage,
+    created_at,
+    updated_at,
+    removed
+)
+
+VALUES(
+          '80000000-0000-0000-0000-000000000001',
+          '10000000-0000-0000-0000-000000000001',
+          '10000000-0000-0000-0000-000000000002',
+          '40000000-0000-0000-0000-000000000002',
+          'Placed',
+          NOW(),
+          NOW(),
+          FALSE
+      );
 

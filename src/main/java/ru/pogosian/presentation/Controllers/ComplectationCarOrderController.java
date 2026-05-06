@@ -81,6 +81,7 @@ public class ComplectationCarOrderController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @Operation(summary = "обновить заказ", description = "обновляет заказ на автомобиль с конкретной комплектацию.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "обновлённый заказ", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
@@ -95,6 +96,7 @@ public class ComplectationCarOrderController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
     @Operation(summary = "удалить заказ", description = "выполняет мягкое удаление заказа автомобиля с конкретной комплектацей.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "заказ удалён"),
@@ -110,7 +112,7 @@ public class ComplectationCarOrderController {
 
 
     @PostMapping("/{id}/move")
-    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN', 'WAREHOUSE_ADMIN')")
+    @PreAuthorize("@orderSecurityService.canMoveComplectationCarOrder(#id, authentication)")
     @Operation(summary = "перевести заказ на следующий статус", description = "ADMIN может переходить из любового этапа, MANAGER может переходить из всех этапов связанных с менеджером, WAREHOUSE_ADMIN может переходить из всех этапов связанных с администратором склада")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "удаленный хаках", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
@@ -125,7 +127,7 @@ public class ComplectationCarOrderController {
     }
 
     @PostMapping("/{id}/cancel")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN') or @orderSecurityService.isComplectationCarOrderOwner(#id, authentication)")
     @Operation(summary = "отмена заказа", description = "USER может отменить свой заказ, ADMIN можнт отменить любоюй заказ")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "заказ отменен", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),
@@ -140,7 +142,7 @@ public class ComplectationCarOrderController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('USER', 'MANAGER', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMIN') or @orderSecurityService.isComplectationCarOrderOwner(#id, authentication)")
     @Operation(summary = "получить заказ", description = "возвращает заказ по идентификатору.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "заказ получен", content = @Content(schema = @Schema(implementation = ComplectationCarOrderResponse.class))),

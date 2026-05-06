@@ -3,6 +3,7 @@ package ru.pogosian;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.repositories.CarDetailsRepository;
 import ru.pogosian.business.repositories.CarModelRepository;
 import ru.pogosian.business.repositories.UserRepository;
@@ -18,7 +19,7 @@ public class RepositoryIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void userRepositoryFindsSeedUser(){
-        var user = userRepository.findByKeycloakId(UUID.fromString("90000000-0000-0000-0000-000000000001"));
+        var user = userRepository.findById(UUID.fromString("10000000-0000-0000-0000-000000000001"));
         Assertions.assertEquals("petya", user.getName());
     }
 }
