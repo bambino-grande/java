@@ -1,18 +1,46 @@
 services:
-  postgres:
+  order-db:
     image: postgres:17
-    container_name: postgres-db
+    container_name: order-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${ORDER_DB}
+      POSTGRES_USER: ${ORDER_DB_USER}
+      POSTGRES_PASSWORD: ${ORDER_DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - order_db_data:/var/lib/postgresql/data
     networks:
       - app-network
+
+  storage-db:
+    image: postgres:17
+    container_name: storage-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${STORAGE_DB}
+      POSTGRES_USER: ${STORAGE_DB_USER}
+      POSTGRES_PASSWORD: ${STORAGE_DB_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - storage_db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    container_name: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - app-network
+
+
+
   keycloak:
     image: quay.io/keycloak/keycloak:26.3.2
     container_name: keycloak
@@ -27,31 +55,68 @@ services:
     networks:
       - app-network
     volumes:
-      - ./src/main/resources/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
-  spring-keycloak-app:
+      - ./docker/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+
+  storage-service:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: spring-keycloak-app
+      args:
+        SERVICE_MODULE: storage-service
+    container_name: storage-service
     depends_on:
-      - postgres
+      - storage-db
       - keycloak
+      - rabbitmq
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_USER}
-      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
-      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
-
+      SPRING_DATASOURCE_URL: jdbc:postgresql://storage-db:5432/${STORAGE_DB}
+      SPRING_DATASOURCE_USERNAME: ${STORAGE_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${STORAGE_DB_PASSWORD}
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8080/realms/bambino-grande
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/bambino-grande/protocol/openid-connect/certs
       JWT_AUTH_CONVERTER_RESOURCE_ID: bambino-grande-rest-api
       JWT_AUTH_CONVERTER_PRINCIPAL_ATTRIBUTE: sub
     ports:
-      - "8081:8080"
+      - "8082:8082"
     restart: always
     networks:
       - app-network
+
+  order-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: order-service
+    container_name: order-service
+    depends_on:
+      - order-db
+      - keycloak
+      - rabbitmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://order-db:5432/${ORDER_DB}
+      SPRING_DATASOURCE_USERNAME: ${ORDER_DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${ORDER_DB_PASSWORD}
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      STORAGE_SERVICE_BASE_URL: http://storage-service:8082
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8080/realms/bambino-grande
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/bambino-grande/protocol/openid-connect/certs
+      JWT_AUTH_CONVERTER_RESOURCE_ID: bambino-grande-rest-api
+      JWT_AUTH_CONVERTER_PRINCIPAL_ATTRIBUTE: sub
+
+    ports:
+      - "8084:8084"
+    restart: always
+    networks:
+      - app-network
+
+
 volumes:
-  postgres_data:
+  order_db_data:
+  storage_db_data:
 
 networks:
   app-network:

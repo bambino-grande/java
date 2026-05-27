@@ -1,1 +1,3 @@
 rootProject.name = 'bambino-grande_template'
+
+include 'common', 'order-service', 'storage-service'
