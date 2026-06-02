@@ -27,4 +27,9 @@ public class JpaOutboxEventRepositoryAdapter implements OutboxEventRepository {
     public void save(OutboxEvent event) {
         jpaOutboxEventRepository.save(outboxEventMapper.toJpaEntity(event));
     }
+
+    @Override
+    public void delete(OutboxEvent event) {
+        jpaOutboxEventRepository.delete(outboxEventMapper.toJpaEntity(event));
+    }
 }

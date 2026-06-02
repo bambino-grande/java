@@ -13,7 +13,8 @@ public class OutboxEventMapper {
                 entity.getRoutingKey(),
                 entity.getMessage(),
                 entity.getTraceId(),
-                entity.getOutboxStatus()
+                entity.getOutboxStatus(),
+                entity.getAttempts()
         );
     }
 
@@ -24,7 +25,8 @@ public class OutboxEventMapper {
                 domain.getRoutingKey(),
                 domain.getMessage(),
                 domain.getTraceId(),
-                domain.getOutboxStatus()
+                domain.getOutboxStatus(),
+                domain.getTryCount()
         );
     }
 }

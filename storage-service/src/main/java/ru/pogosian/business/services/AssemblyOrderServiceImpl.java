@@ -8,19 +8,21 @@ import org.springframework.stereotype.Service;
 import ru.pogosian.business.assembly.AssemblyOrder;
 import ru.pogosian.business.assembly.AssemblyOrderStatus;
 import ru.pogosian.business.cars.Car;
+import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.outbox.OutboxEvent;
 import ru.pogosian.business.outbox.OutboxStatus;
-import ru.pogosian.business.repositories.AssemblyOrderRepository;
-import ru.pogosian.business.repositories.CarRepository;
-import ru.pogosian.business.repositories.OutboxEventRepository;
+import ru.pogosian.business.repositories.*;
 import ru.pogosian.config.RabbitMQConfig;
 import ru.pogosian.messaging.events.OrderApproved;
 import ru.pogosian.messaging.events.OrderRejected;
 import ru.pogosian.messaging.events.OrderSentForApproval;
+import ru.pogosian.security.SecurityService;
 
+import java.lang.module.Configuration;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,8 @@ public class AssemblyOrderServiceImpl implements AssemblyOrderService {
     private final CarRepository carRepository;
     private final OutboxEventRepository outboxEventRepository;
     private final ObjectMapper objectMapper;
+    private final CarModelRepository carModelRepository;
+    private final SecurityService securityService;
     @Transactional
     @Override
     public AssemblyOrder addAssemblyOrder(AssemblyOrder assemblyOrder) {
@@ -40,7 +44,16 @@ public class AssemblyOrderServiceImpl implements AssemblyOrderService {
     @Override
     public AssemblyOrder updateAssemblyOrder(UUID id, AssemblyOrder assemblyOrder) {
         AssemblyOrder order = viewAssemblyOrder(id);
-        AssemblyOrder change = new AssemblyOrder(order.getId(), assemblyOrder.getSourceOrderId(),assemblyOrder.getStatus());
+        AssemblyOrder change = new AssemblyOrder(
+                order.getId(),
+                assemblyOrder.getSourceOrderId(),
+                assemblyOrder.getStatus(),
+                assemblyOrder.isRemoved(),
+                assemblyOrder.getOrderType(),
+                assemblyOrder.getCarId(),
+                assemblyOrder.getRequiredDetailIds(),
+                assemblyOrder.getWarehouseEmployeeId()
+        );
         assemblyOrderRepository.save(change);
         return change;
     }
@@ -77,7 +90,13 @@ public class AssemblyOrderServiceImpl implements AssemblyOrderService {
                 assemblyOrderRepository.save(new AssemblyOrder(
                         UUID.randomUUID(),
                         orderSentForApproval.orderId(),
-                        AssemblyOrderStatus.ASSEMBLED)
+                        AssemblyOrderStatus.ASSEMBLED,
+                        false,
+                        orderSentForApproval.orderType(),
+                        orderSentForApproval.carId(),
+                        carModelRepository.findById(carRepository.findById(orderSentForApproval.carId()).getConfiguration().getConfigurationModelId()).getDetails().stream().map(CarDetails::getId).collect(Collectors.toSet()),
+                        securityService.getCurrentUser().getId()
+                        )
                 );
                 outboxEventRepository.save(new OutboxEvent(
                                 messageId,
@@ -100,7 +119,13 @@ public class AssemblyOrderServiceImpl implements AssemblyOrderService {
                 assemblyOrderRepository.save(new AssemblyOrder(
                         UUID.randomUUID(),
                         orderSentForApproval.orderId(),
-                        AssemblyOrderStatus.FAIL)
+                        AssemblyOrderStatus.FAIL,
+                        false,
+                        orderSentForApproval.orderType(),
+                        orderSentForApproval.carId(),
+                        carModelRepository.findById(carRepository.findById(orderSentForApproval.carId()).getConfiguration().getConfigurationModelId()).getDetails().stream().map(CarDetails::getId).collect(Collectors.toSet()),
+                        securityService.getCurrentUser().getId()
+                        )
                 );
                 outboxEventRepository.save(new OutboxEvent(
                                 messageId,

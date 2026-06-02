@@ -3,6 +3,8 @@ package ru.pogosian.infrastructure.messaging;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import ru.pogosian.business.orders.complectationCarOrder.ComplectationCarOrder;
@@ -22,6 +24,7 @@ import ru.pogosian.messaging.events.OrderRejected;
 import java.io.IOException;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class OrderEventConsumer {
     private final ProcessedEventRepository processedEventRepository;
@@ -32,19 +35,22 @@ public class OrderEventConsumer {
     @Transactional
     public void handleOrderApproved(byte[] message) throws IOException {
         OrderApproved orderApproved = new ObjectMapper().readValue(message, OrderApproved.class);
-        if(processedEventRepository.existsByEventId(orderApproved.messageId()))
-            return;
-        processedEventRepository.save(orderApproved.messageId());
+        try(MDC.MDCCloseable ignored = MDC.putCloseable("traceId", orderApproved.traceId().toString())){
+            log.info("Order approved: {}; traceId: {}", orderApproved, orderApproved.traceId());
+            if(processedEventRepository.existsByEventId(orderApproved.messageId()))
+                return;
+            processedEventRepository.save(orderApproved.messageId());
 
-        if(orderApproved.orderType() == OrderType.IN_STOCK){
-            InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderApproved.orderId());
-            inStockCarOrder.setState(new InStockCarOrderIsReadyForPickingUp());
-            inStockCarOrderRepository.save(inStockCarOrder);
-        }
-        else{
-            ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderApproved.orderId());
-            complectationCarOrder.setState(new ComplectationCarOrderIsReadyForPickingUp());
-            complectationCarOrderRepository.save(complectationCarOrder);
+            if(orderApproved.orderType() == OrderType.IN_STOCK){
+                InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderApproved.orderId());
+                inStockCarOrder.setState(new InStockCarOrderIsReadyForPickingUp());
+                inStockCarOrderRepository.save(inStockCarOrder);
+            }
+            else {
+                ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderApproved.orderId());
+                complectationCarOrder.setState(new ComplectationCarOrderIsReadyForPickingUp());
+                complectationCarOrderRepository.save(complectationCarOrder);
+            }
         }
     }
 
@@ -52,19 +58,21 @@ public class OrderEventConsumer {
     @Transactional
     public void handleOrderRejected(byte[] message) throws IOException {
         OrderRejected orderRejected = new ObjectMapper().readValue(message, OrderRejected.class);
-        if(processedEventRepository.existsByEventId(orderRejected.messageId()))
-            return;
-        processedEventRepository.save(orderRejected.messageId());
+        try(MDC.MDCCloseable ignored = MDC.putCloseable("traceId", orderRejected.traceId().toString())) {
+            log.info("Order rejected: {}; traceId: {}", orderRejected, orderRejected.traceId());
+            if (processedEventRepository.existsByEventId(orderRejected.messageId()))
+                return;
+            processedEventRepository.save(orderRejected.messageId());
 
-        if(orderRejected.orderType() == OrderType.IN_STOCK){
-            InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderRejected.orderId());
-            inStockCarOrder.setState(new InStockCarOrderCancelled());
-            inStockCarOrderRepository.save(inStockCarOrder);
-        }
-        else{
-            ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderRejected.orderId());
-            complectationCarOrder.setState(new ComplectationCarOrderCancelled());
-            complectationCarOrderRepository.save(complectationCarOrder);
+            if (orderRejected.orderType() == OrderType.IN_STOCK) {
+                InStockCarOrder inStockCarOrder = inStockCarOrderRepository.findById(orderRejected.orderId());
+                inStockCarOrder.setState(new InStockCarOrderCancelled());
+                inStockCarOrderRepository.save(inStockCarOrder);
+            } else {
+                ComplectationCarOrder complectationCarOrder = complectationCarOrderRepository.findById(orderRejected.orderId());
+                complectationCarOrder.setState(new ComplectationCarOrderCancelled());
+                complectationCarOrderRepository.save(complectationCarOrder);
+            }
         }
     }
 }

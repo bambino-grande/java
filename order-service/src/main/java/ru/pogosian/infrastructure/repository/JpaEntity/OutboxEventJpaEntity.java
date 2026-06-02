@@ -31,12 +31,16 @@ public class OutboxEventJpaEntity extends BaseJpaEntity {
     @Column(nullable = false)
     private OutboxStatus outboxStatus;
 
-    public OutboxEventJpaEntity(UUID id, UUID aggregateId, String routingKey, String payload, UUID traceId,  OutboxStatus outboxStatus) {
+    @Column(nullable = false)
+    private int attempts;
+
+    public OutboxEventJpaEntity(UUID id, UUID aggregateId, String routingKey, String payload, UUID traceId,  OutboxStatus outboxStatus,  int attempts) {
         super(id);
         this.aggregateId = aggregateId;
         this.routingKey = routingKey;
         this.message = payload;
         this.traceId = traceId;
         this.outboxStatus = outboxStatus;
+        this.attempts = attempts;
     }
 }

@@ -2,6 +2,8 @@ package ru.pogosian.business.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
     private final InStockCarOrderRepository inStockCarOrderRepository;
@@ -194,16 +197,16 @@ public class OrderServiceImpl implements OrderService{
         return userRepository.findAllManagers().stream().findAny().map(User::getId).orElseThrow(()->new DomainValidationException("no manager have been found"));
     }
 
-    private void sendOrderForWarehouseApproval(UUID orderId, UUID carId, OrderType orderType){
+    private void sendOrderForWarehouseApproval(UUID orderId, UUID carId, OrderType orderType) {
         UUID traceId = UUID.randomUUID();
-        OrderSentForApproval event = new OrderSentForApproval(
-                UUID.randomUUID(),
-                orderId,
-                orderType,
-                traceId,
-                carId
-        );
-        try {
+        try (MDC.MDCCloseable ignored = MDC.putCloseable("traceId", traceId.toString())) {
+            OrderSentForApproval event = new OrderSentForApproval(
+                    UUID.randomUUID(),
+                    orderId,
+                    orderType,
+                    traceId,
+                    carId
+            );
             String message = objectMapper.writeValueAsString(event);
             outboxEventRepository.save(new OutboxEvent(
                     event.messageId(),
@@ -213,9 +216,10 @@ public class OrderServiceImpl implements OrderService{
                     traceId,
                     OutboxStatus.PENDING
             ));
+            log.info("Sent order for warehouse approval");
         }
-        catch (Exception ignored) {
-            throw new DomainValidationException("can't sent order for approval");
+        catch (Exception exception) {
+            throw new DomainValidationException("can't send order for warehouse approval");
         }
     }
 }

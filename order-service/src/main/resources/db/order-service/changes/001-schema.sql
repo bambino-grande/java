@@ -60,6 +60,7 @@ CREATE TABLE outbox_events(
     message TEXT NOT NULL,
     trace_id UUID NOT NULL,
     outbox_status VARCHAR(255) NOT NULL,
+    attempts INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
     removed BOOLEAN NOT NULL DEFAULT FALSE

@@ -109,7 +109,20 @@ CREATE TABLE assembly_orders(
     status VARCHAR(255) NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    removed BOOLEAN NOT NULL DEFAULT FALSE
+    removed BOOLEAN NOT NULL DEFAULT FALSE,
+    warehouse_employee_id UUID NOT NULL,
+    order_type VARCHAR(255) NOT NULL,
+    car_id UUID NOT NULL,
+    CONSTRAINT fk_assembly_orders_warehouse_employee FOREIGN KEY (warehouse_employee_id) REFERENCES users(id),
+    CONSTRAINT fk_assembly_orders_car FOREIGN KEY (car_id) REFERENCES cars(id)
+);
+
+CREATE TABLE assembly_order_required_details(
+    assembly_order_id UUID NOT NULL,
+    detail_id UUID NOT NULL,
+    PRIMARY KEY(assembly_order_id, detail_id),
+    CONSTRAINT fk_assembly_order_required_details_order FOREIGN KEY (assembly_order_id) REFERENCES assembly_orders(id),
+    CONSTRAINT fk_assembly_order_required_details_detail FOREIGN KEY (detail_id) REFERENCES car_detail(id)
 );
 
 CREATE TABLE processed_events(
