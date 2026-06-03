@@ -80,6 +80,7 @@ services:
       JWT_AUTH_CONVERTER_PRINCIPAL_ATTRIBUTE: sub
     ports:
       - "8082:8082"
+      - "9092:9092"
     restart: always
     networks:
       - app-network
@@ -94,6 +95,7 @@ services:
     depends_on:
       - order-db
       - keycloak
+      - storage-service
       - rabbitmq
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://order-db:5432/${ORDER_DB}
@@ -102,6 +104,8 @@ services:
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_RABBITMQ_PORT: 5672
       STORAGE_SERVICE_BASE_URL: http://storage-service:8082
+      STORAGE_SERVICE_GRPC_HOST: storage-service
+      STORAGE_SERVICE_GRPC_PORT: 9092
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://localhost:8080/realms/bambino-grande
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI: http://keycloak:8080/realms/bambino-grande/protocol/openid-connect/certs
       JWT_AUTH_CONVERTER_RESOURCE_ID: bambino-grande-rest-api

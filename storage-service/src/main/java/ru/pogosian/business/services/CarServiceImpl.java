@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.pogosian.business.cars.*;
 import ru.pogosian.business.detail.CarDetails;
 import ru.pogosian.business.detail.factories.*;
+import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.filters.*;
 import ru.pogosian.business.repositories.CarConfigurationRepository;
 import ru.pogosian.business.repositories.CarDetailsRepository;
@@ -18,7 +19,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CarServiceImpl implements CarService{
+public class CarServiceImpl implements CarService {
     private final CarDetailsRepository carDetailsRepository;
     private final CarRepository carRepository;
     private final CarModelRepository carModelRepository;
@@ -46,7 +47,7 @@ public class CarServiceImpl implements CarService{
 
     @Override
     public Car viewCar(UUID carID) {
-        return  carRepository.findById(carID);
+        return carRepository.findById(carID);
     }
 
     @Override
@@ -133,5 +134,19 @@ public class CarServiceImpl implements CarService{
         Car car = carRepository.findById(carId);
         car.setAvailableForTestDrive(availableForTestDrive);
         carRepository.save(car);
+    }
+
+    @Override
+    public List<Car> viewAvailableCars() {
+        return carRepository.findAll().stream().filter(car -> car.getAvailableForSale() == true).toList();
+    }
+
+    @Override
+    public Car viewAvailableCar(UUID carID) {
+        Car car = carRepository.findById(carID);
+        if (car.getAvailableForSale() != true) {
+            throw new DomainValidationException("Available car not found");
+        }
+        return car;
     }
 }

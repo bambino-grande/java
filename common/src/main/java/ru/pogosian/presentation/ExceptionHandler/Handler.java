@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.pogosian.business.excrptions.DomainValidationException;
 import ru.pogosian.business.excrptions.IncompatibleComponentException;
+import ru.pogosian.business.excrptions.StorageServiceUnavailableException;
 
 import java.time.Instant;
 
@@ -25,4 +26,10 @@ public class Handler {
     public ResponseEntity<ErrorResponse> handleIncompatibleComponentException(IncompatibleComponentException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(exception.getMessage(), HttpStatus.CONFLICT.value(), Instant.now()));
     }
+
+    @ExceptionHandler(StorageServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleStorageServiceUnavailableException(StorageServiceUnavailableException exception) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(exception.getMessage(), HttpStatus.SERVICE_UNAVAILABLE.value(), Instant.now()));
+    }
+
 }

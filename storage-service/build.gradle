@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     testImplementation 'org.testcontainers:rabbitmq:1.21.4'
+    implementation 'io.grpc:grpc-netty-shaded:1.65.1'
 }
 
 springBoot {

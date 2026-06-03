@@ -1,5 +1,6 @@
 package ru.pogosian;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.pogosian.business.outbox.OutboxEvent;
@@ -22,7 +23,7 @@ public class StorageOutboxPublisherIntegrationTest extends BaseIntegrationTest {
 
 
     @Test
-    void failedPublishShouldStopRetryingAfterMaxAttempts(){
+    void shouldSavePendingOutboxEvent(){
         UUID eventId = UUID.randomUUID();
         outboxEventRepository.save(new OutboxEvent(
                 eventId,
@@ -35,6 +36,7 @@ public class StorageOutboxPublisherIntegrationTest extends BaseIntegrationTest {
         ));
 
         OutboxEventJpaEntity event = jpaOutboxEventRepository.findById(eventId).orElseThrow();
-
+        Assertions.assertEquals(OutboxStatus.PENDING, event.getOutboxStatus());
+        Assertions.assertEquals(RabbitMQConfig.ROUTING_KEY_APPROVED, event.getRoutingKey());
     }
 }

@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package ru.pogosian.grpc.storage;
+
+service StorageCarService{
+  rpc ListAvailableCars(ListAvailableCarsRequest) returns (ListAvailableCarsResponse);
+  rpc GetAvailableCar(GetAvailableCarRequest) returns (AvailableCarResponse);
+}
+
+message ListAvailableCarsRequest{
+
+}
+
+message ListAvailableCarsResponse{
+  repeated AvailableCar cars = 1;
+}
+
+message AvailableCar{
+  string carId = 1;
+  string carName = 2;
+  string configuration_id = 3;
+  string configuration_model_id = 4;
+  string color = 5;
+  string price = 6;
+  bool available_for_sale = 7;
+  bool available_for_test_drive = 8;
+}
+
+message GetAvailableCarRequest{
+  string car_id = 1;
+}
+
+message AvailableCarResponse{
+  AvailableCar car = 1;
+}
+

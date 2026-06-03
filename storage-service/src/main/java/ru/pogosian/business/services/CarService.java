@@ -17,4 +17,6 @@ public interface CarService {
     Car updateCar(UUID carId, UUID configurationId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive);
     Car CreateCarFromModel(UUID modelId, String carName, ColorTypes color, boolean availableForSale, boolean availableForTestDrive);
     void makeCarAvailableForTestDrive(UUID carId, boolean availableForTestDrive);
+    List<Car> viewAvailableCars();
+    Car viewAvailableCar(UUID carID);
 }
