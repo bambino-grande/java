@@ -1,0 +1,37 @@
+package ru.pogosian.infrastructure.repository.JpaEntity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.Instant;
+import java.util.UUID;
+
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+@Getter
+public abstract class BaseJpaEntity {
+    @Id
+    private UUID id;
+
+    @CreatedDate
+    @Column(updatable = false,  nullable = false)
+    private Instant createdAt;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Instant updatedAt;
+
+    @Setter
+    @Column(nullable = false)
+    private boolean removed;
+
+    public BaseJpaEntity(UUID id) {
+        this.id = id;
+    }
+}
