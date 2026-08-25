@@ -1,0 +1,140 @@
+{
+  "realm": "bambino-grande",
+  "enabled": true,
+
+  "roles": {
+    "realm": [
+      {
+        "name": "USER"
+      },
+      {
+        "name": "MANAGER"
+      },
+      {
+        "name": "WAREHOUSE_ADMIN"
+      },
+      {
+        "name": "ADMIN"
+      }
+    ]
+  },
+
+  "clients": [
+    {
+      "clientId": "bambino-grande-rest-api",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "protocol": "openid-connect",
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": "90000000-0000-0000-0000-000000000001",
+      "username": "petya",
+      "firstName": "Petya1",
+      "lastName": "Petya1",
+      "email": "petya1@example.com",
+      "emailVerified": true,
+      "enabled": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER"
+      ]
+    },
+    {
+      "id": "90000000-0000-0000-0000-000000000002",
+      "username": "petya2",
+      "firstName": "Petya2",
+      "lastName": "Petya2",
+      "email": "petya2@example.com",
+      "emailVerified": true,
+      "enabled": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "MANAGER"
+      ]
+    },
+    {
+      "id": "90000000-0000-0000-0000-000000000003",
+      "username": "petya3",
+      "firstName": "Petya3",
+      "lastName": "Petya3",
+      "email": "petya3@example.com",
+      "emailVerified": true,
+      "enabled": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "WAREHOUSE_ADMIN"
+      ]
+    },
+    {
+      "id": "90000000-0000-0000-0000-000000000004",
+      "username": "petya4",
+      "enabled": true,
+      "firstName": "Petya4",
+      "lastName": "Petya4",
+      "email": "petya4@example.com",
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "ADMIN"
+      ]
+    },
+    {
+      "id": "90000000-0000-0000-0000-000000000005",
+      "username": "petya5",
+      "firstName": "Petya5",
+      "lastName": "Petya5",
+      "email": "petya5@example.com",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "USER"
+      ]
+    }
+  ]
+}
